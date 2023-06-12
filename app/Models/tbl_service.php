@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Session;
-class order_rooms extends Model
+class tbl_service extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $table = 'order_rooms';
+    protected $table = 'tbl_service';
     protected $fillable = [
-        'id', 'name', 'phone', 'ma_phong', 'stayNights', 'totalPrice', 'check_in', 'check_out', 'status', 'cccd', 'address'
+        'id', 'type_service', 'name_service', 'price_service', 'note_service'
     ];
 }
+

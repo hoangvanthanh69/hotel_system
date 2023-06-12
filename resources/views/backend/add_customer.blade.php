@@ -3,40 +3,59 @@
 @section('content')
 <div class="">
     <div class="add-room-each w-50">
-        <form id="signupForm" enctype="multipart/form-data" method='post' action="{{route('add-staffs')}}">
+        <form id="signupForm" enctype="multipart/form-data" method='post' action="{{route('order-rooms')}}">
             @csrf
-            <div class="row">
-              <label class="name-add-room-all col-2" for="">Mã NV:</label>
-              <input class="input-add-room col-9" type="text" name="code_staff">
-            </div>
-
             <div class="row mt-4">
-              <label class="name-add-room-all col-2" for="">Họ Tên:</label>
+              <label class="name-add-room-all col-3" for="">Họ Tên:</label>
               <input class="input-add-room col-9" type="text" name="name">
             </div>
 
             <div class="row mt-4">
-              <label class="name-add-room-all col-2" for="">SĐT:</label>
+              <label class="name-add-room-all col-3" for="">SĐT:</label>
               <input class="input-add-room col-9" type="text" name="phone">
             </div>
 
             <div class="row mt-4">
-              <label class="name-add-room-all col-2" for="">CCCD:</label>
+              <label class="name-add-room-all col-3" for="">CCCD:</label>
               <input class="input-add-room col-9" type="text" name="cccd">
             </div>
 
             <div class="row mt-4">
-              <label class="name-add-room-all col-2" for="">Địa chỉ:</label>
+              <label class="name-add-room-all col-3" for="">Địa chỉ:</label>
               <input class="input-add-room col-9" type="text" name="address">
             </div>
 
             <div class="row mt-4">
-              <label class="name-add-room-all col-2" for="">Lương:</label>
-              <input class="input-add-room col-9" type="text" name="wage">
+                <label class="name-add-room-all col-3">Check in: </label>
+                <input class="input-add-room col-9" type="date" id="check_in" name="check_in"/>
+            </div>
+
+            <div class="row mt-4">
+              <label class="name-add-room-all col-3" for="">Số đêm:</label>
+              <input class="input-add-room col-9" type="text" name="stayNights">
+            </div>
+
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3" for="">MS phòng:</label>
+                <div class='col-9 p-0'>
+                    <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
+                        <option value="">Chọn Phòng</option>
+                        @foreach($tbl_rooms as $tbl_room)
+                            <option value="{{$tbl_room->ma_phong}}" data-price="{{ $tbl_room->price }}">{{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ</option>
+                        @endforeach
+                    </select>
+                    <input type="hidden" name="id" value="">
+                </div>
+
+            </div>
+
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3" for="">Tổng giá:</label>
+                <span class="input-add-room col-9 text-warning fw-bolder" id="totalPrice"></span>
             </div>
 
             <div class="back-add-room">
-              <a class="back-rooms" href="{{route('quan-ly-nhan-vien')}}">Hủy</a>
+              <a class="back-rooms" href="{{route('quan-ly-hd')}}">Hủy</a>
               <button class="add-room button-add-room-save" type="submit">Lưu</button>
             </div>
         </form>
@@ -50,20 +69,18 @@
 		$(document).ready(function(){
 			$("#signupForm").validate({
 				rules: {
-					code_staff: "required",
 					name: "required",
 					phone: "required",
 					cccd: "required",
-          address: "required",
-          wage: "required",
+                    address: "required",
+                    stayNights: "required",
 				},
 				messages: {
-					code_staff: "Nhập mã Nhân viên",
 					name: "Nhập Tên",
 					phone: "Nhập Số điện thoại",
 					cccd: "Nhập CCCD",
 					address: "Nhập địa chỉ",
-					wage: "Nhập mức lương",
+					stayNights: "Số đêm",
 
 				},
 				errorElement: "div",
@@ -83,4 +100,18 @@
 				} 
 			});
     });
+</script>
+<script>
+    function updateTotalPrice() {
+        var stayNights = parseInt(document.getElementsByName("stayNights")[0].value);
+        var selectedOption = document.getElementsByName("ma_phong")[0].options[document.getElementsByName("ma_phong")[0].selectedIndex];
+        var price = parseInt(selectedOption.getAttribute("data-price"));
+        var totalPrice = stayNights * price;
+
+        document.getElementById("totalPrice").innerText = numberWithCommas(totalPrice) + " VNĐ";
+    }
+
+    function numberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 </script>

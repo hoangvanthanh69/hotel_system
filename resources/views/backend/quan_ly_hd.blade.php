@@ -10,7 +10,7 @@
             <div class="table-responsive table-list-product">
                 <div class="search-option-infor-amdin">
                     <div class="search-infor-amdin-form-room">
-                        <a class="add-room" href="{{route('add-staff')}}">Thêm Mới</a>
+                        <a class="add-room" href="{{route('add-customer')}}">Thêm Mới</a>
                     </div>
                     <div class="search-infor-amdin-form-room ">
                         <form action="{{route('admin.searchOrder')}}" method="GET" class="header-with-search-form ">
@@ -31,7 +31,7 @@
                     <thead>
                     <tr class="tr-name-table bg-success">
                         <th>STT</th>
-                        <th>Tên Khách Hàng</th>
+                        <th>Khách Hàng</th>
                         <th>SĐT</th>
                         <th>MS Phòng</th>
                         <th>Số đêm</th>
@@ -67,7 +67,12 @@
                                         đã trả phòng
                                     @endif
                                 </td>
-                                <td class="">
+                                <td class="d-flex ps-4">
+                                    <form action="{{route('edit-customer', $val['id'])}}" class="text-center">
+                                        <button class="summit-add-room-button" type='submit'>
+                                            <i class="fa fa-wrench icon-wrench" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
                                     <form action="{{route('delete-order', $val['id'])}}">
                                         <button class="summit-add-room-button" type='submit'>
                                             <i class="fa fa-trash function-icon-delete" aria-hidden="true"></i>

@@ -95,6 +95,15 @@
                         <br>
                         <div class="home-filter" id="filter_button">
                             <div class="home-filter-button" data-filter="all">
+                                <a class="@yield('sidebar-active-service')" href="{{route('quan-ly-dich-vu')}}">
+                                <i class="fa-brands fa-usps"></i>
+                                    Quản lý dịch vụ
+                                </a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="home-filter" id="filter_button">
+                            <div class="home-filter-button" data-filter="all">
                                 <a class="" href="{{route('admin')}}">
                                     <i class=" fa fa-home icon-all-admin-nav" aria-hidden="true"></i>
                                     Quản lý khách hàng

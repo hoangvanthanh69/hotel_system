@@ -50,7 +50,7 @@ Route::get('logoutuser', [index_frontend::class,'logoutuser'])->name('logoutuser
 Route::get('register',[index_frontend::class, 'register'])->name('register');
 Route::post('register-customer',[index_frontend::class, 'register_customer'])->name('register-customer');
 
-// tran chu cua nhan vien
+// tran chu
 Route::get('home', [index_frontend::class, 'home'])->name('home');
 
 // chi tiet phong 
@@ -73,7 +73,7 @@ Route::get('/delete-rooms/{id}/tbl_rooms', [index_backend::class, 'delete_rooms'
 Route::get('searchrooms', [index_backend::class, 'searchrooms'])->name('admin.searchrooms');
 
 // dat phong
-Route::post('/order-rooms', [index_frontend::class, 'order_rooms'] )->name('order-rooms');
+Route::post('/order-rooms', [index_backend::class, 'order_rooms'] )->name('order-rooms');
 
 // xóa đơn hàng
 Route::get('/delete-order/{id}/order_rooms', [index_backend::class, 'delete_order'] )->name('delete-order');
@@ -96,3 +96,15 @@ Route::post('add-staffs', [index_backend::class, 'add_staffs'])->name('add-staff
 // edit nhan vien 
 Route::get('/edit-staff/{id}', [index_backend::class, 'edit_staff'])->name('edit-staff');
 Route::post('/update-staff/{id}', [index_backend::class, 'update_staff'] )->name('update-staff');
+
+// thêm khách hàng mới
+Route::get('/add-customer', [index_backend::class, 'add_customer'])->name('add-customer');
+
+// edit khách thuê phòng
+Route::get('/edit-customer/{id}', [index_backend::class, 'edit_customer'])->name('edit-customer');
+Route::post('/update-customer/{id}', [index_backend::class, 'update_customer'] )->name('update-customer');
+
+//quản lý dịch vụ 
+Route::get('/quan-ly-dich-vu', [index_backend::class,'quan_ly_dich_vu'])->name('quan-ly-dich-vu');
+Route::get('/add-service', [index_backend::class,'add_service'])->name('add-service');
+Route::post('add-services', [index_backend::class, 'add_services'])->name('add-services');

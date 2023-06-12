@@ -1,0 +1,487 @@
+.grid{
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
+
+}
+.icon-login-user{
+    display: flex;
+    font-size: 28px;
+    margin-top: 30px;
+}
+.icon-name-login a{
+    padding-right: 12px;
+    text-decoration: none;
+}
+.logo-name-hotel{
+    color: #77d020 !important;
+}
+.login-form-header-user {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+.home-filter-user-login{
+    display: flex;
+    background-color: rgb(38, 121, 160);
+    justify-content: space-evenly;
+    text-align: center;
+    padding: 0px 155px;
+    width: 100%;
+    margin-top: 10px;
+    min-height: 100%;
+}
+.form-img-user{
+    margin: 50px;
+}
+.form-img-user img {
+    width: 100%;
+    height: 100%;
+    border-radius: 2px;
+}
+.form-user{
+    width: 30%;
+    min-height: 100px;
+    background-color: #F1F1F1;
+    padding: 30px 26px;
+    text-align: center;
+    border-radius: 4px;
+    border: 1px solid rgb(168, 166, 166);
+    margin: 50px;
+    
+    box-shadow: 0 10px 10px 0 rgb(51 62 73 / 10%);
+    z-index: 1;
+}
+.heading-login-user{
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: black !important;
+}
+.form-group{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+}
+.label.form-label {
+    margin-top: 20px;
+}
+input.form-control:focus {
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.form-submit-user {
+    margin-bottom: 20px;
+}
+.form-submit{
+    background-color: #db2727;
+    height: 38px;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 14px ;
+}
+.login-user-register a{
+    text-decoration: none !important;
+}
+.footer-imge-user{
+    color: black !important;
+}
+.footer-imge-license{
+    padding: 18px 0 ;
+    display: flex;
+    justify-content: center;
+    color: rgb(228, 234, 237);
+}
+.login-customer{
+    max-height: 550px;
+}
+.form-label, .form-mesage {
+    text-align: left;
+    font-size: 20px;
+}
+.form-submit-user-register {
+    margin-bottom: 15px;
+}
+.form-users-checkbox{
+    text-align: left;
+}
+.invalid-feedbacks {
+    margin-top: 5px !important;
+    font-size: 14px;
+    color: #dc3545;
+    text-align: left;
+}
+.header{
+    background-color: rgb(255, 255, 255);
+}
+.header-with{
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo-hotel-hotel{
+    width: 60px;
+    margin-right: 30px;
+}
+.logo-hotel-hotel img{
+    width: 60px;
+    border-radius: 18px;
+}
+.header-with-logo-name{
+    color: rgb(38, 121, 160);
+    font-size: 35px;
+    font-family:cursive;
+    font-weight: 600;
+    text-decoration: none;
+    padding-right: 40px;
+}
+.logo-name-hotel{
+    color: #77d020 !important;
+}
+.header-with-search-header{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    border: 1px solid;
+    border-radius: 60px; 
+}
+.header-with-search-form{
+    align-items: center;
+    border-radius: 3px;
+}
+.header-with-search-icon{
+    font-size: 14px;
+    padding-left: 10px;
+} 
+.header-with-search-input{
+    color: black;
+    outline: none;
+    display: flex;
+    width: 98%;
+    border: none;
+    height: 38px;
+    font-size: 16px;
+    border-radius: 40px;
+    padding-left: 10px;
+}
+.header-criteria{
+    text-align: center;
+    padding-left: 35px;
+    padding-right: 20px;
+    padding-top: 27px;
+}
+.header-criteria-h3{
+    font-size: 20px;
+    cursor: pointer !important;
+    font-weight: 550;
+    color: #75b239;
+    cursor: default;
+}
+.header-criteria-quality{
+    text-align: center;
+    padding-left: 16px;
+    padding-right: 35px;
+    padding-top: 27px;
+}
+.header-criteria-p{
+    margin-top: -6px;
+    text-align: center;
+    font-size: 17px;
+    color: rgb(38, 121, 160);
+}
+.header-criteria-link-login{
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 550;
+    color: #75b239;
+    text-decoration: none;
+}
+.header-criteria-login{
+    margin-top: -39px;
+}
+.footer{
+    border-top: 3px solid rgb(151, 150, 149);
+    background-color: rgb(38, 121, 160);
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.grid-row{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px 4px 10px 4px;
+} 
+.grid-row-footer{
+    display: flex;
+    justify-content:space-evenly;
+}
+.home-row-column{
+    width: 20%;
+    padding-left: 4px;
+    padding-right: 4px;
+    display: flex;
+}
+.home-row-column-footer{
+    width: 22%;
+    margin-top: -35px;
+}
+.contact{
+    display: block;
+    justify-content: space-between;
+}
+.contact-support{
+    display: flex;
+    text-align: center;
+    color: wheat;
+    font-size: 20px;
+    font-weight: 600;
+    justify-content: center;
+}
+.contact-support-list{
+    padding-right: 6px;
+   padding-left: 12px;
+   margin-top: 10px;
+   cursor: pointer;
+}
+.contact-support-item{
+    list-style: none;
+    font-size: 19px;
+    padding-top: 12px
+}
+.contact-support-item-icon-call{
+    color: rgb(232, 40, 40);
+}
+.contact-support-item-call-link{
+    text-decoration: none;
+    padding-left: 4px;
+    color: white;
+}
+.icon-location{
+    color: #75b239;
+}
+.contact-support-item-icon-facebook{
+    color: white;
+}
+.contact-support-item-icon-youtube{
+    color: rgb(232, 32, 32);
+}
+.contact-support-item-icon-instagram{
+    color: rgb(140, 25, 105);
+}
+.hot-line a{
+    background: #FD9C2C;
+    border-radius: 58px;
+    font-size: 24px;
+    line-height: 150%;
+    color: #D82438;
+    font-weight: bold;
+    height: 53px;
+    padding-left: 21px;
+    display: flex;
+    text-decoration: none;
+    align-items: center;
+    margin-top: 30px;
+}
+.grid-nav{
+    padding-top: 10px;
+}
+.home-filter{
+    display: flex;
+    background-color: rgb(38, 121, 160);
+    justify-content: space-evenly;
+    text-align: center;
+    padding: 12px 50px;
+    width: 100%;
+}
+.home-filter-button{
+    min-width: 100px;
+    font-size: 18px;
+    height: 32px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    font-family: Arial;
+    font-weight: 450;
+    margin: 0 5px;
+}
+.submit-order-next{
+    background-color: red;    
+    font-size: 19px;
+    color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+.submit-order-back{
+    background-color: rgb(25, 115, 240);    
+    font-size: 19px;
+    color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+.price-room-order-customer{
+    font-size: 20px;
+    color: red;
+}
+.img-room-customer {
+    width: 100%;
+    min-height: 48%;
+    will-change: transform;
+    transition: transform linear 0.1s;
+}
+.img-room-customer img {
+    width: 100%;
+    min-height: 225px;
+    border: 2px solid rgb(244 244 244);;
+    border-radius: 3px;
+}
+.room-infor-customer{
+    font-size: 17px;
+    min-height: 168px;
+}
+.room-customer-choose a{
+    text-decoration: none;
+    color: black;
+}
+.room-customer-choose a:hover{
+    color: black;
+}
+.actives{
+    background-color: red !important;
+    color: white;
+}
+.room-info-label{
+    font-weight: bold;
+}
+.back-rooms-customer {
+    text-align: center;
+    margin-left: 42%;
+}
+.carousel-item img{
+    max-height: 415px;
+    height: 383px;
+    object-fit: contain;
+}
+.carousel-thumbnails {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.thumbnail {
+    margin: 0 5px;
+}
+.thumbnail img {
+    width: 100px;
+    height: 80px;
+    object-fit: contain;
+    cursor: pointer;
+    border: 1px solid #b4b4ad;
+    border-radius: 4px;
+    padding-top: 2px;
+}
+.thumbnail.active-thumbnail img {
+    border: 2px solid rgb(52, 179, 6);
+}
+.order-room-customer-infor{
+    outline: none;
+    border-radius: 2px;
+    border: 1px solid;
+    height: 37px;
+}
+.order-room-customer-label{
+    font-size: 17px;
+}
+.total-order-room-customer{
+    color: red;
+}
+.img-room-customer:hover {
+    transform: translateY(-2px);
+}
+.price-room-order{
+    color: red;
+}
+.header-criteria-login{
+    padding-top: -12px !important;
+}
+.header-with-account-span{
+    font-size: 17px;
+    cursor: pointer;
+    font-weight: 550;
+    text-align: center;
+}
+.header-with-account-span a{
+    text-decoration: none !important;
+    color: rgb(29, 28, 28);
+}
+.header-with-account-span:hover{
+    color: rgb(70, 70, 70);
+}
+.describe-rooms-customer{
+    font-size: 18px;
+    color: rgb(5, 14, 97);
+}
+.notification-order {
+    text-align: center;
+    color: #000000;
+    position: fixed;
+    top: 193px;
+    right: -100px;
+    border: 1px solid #b2a3a3;
+    height: 59px;
+    line-height: 38px;
+    background-color: #f7f7f7;
+    z-index: 999999;
+    padding: 10px;
+    border-radius: 2px;
+    transition: all 0.5s ease-in-out;
+    box-shadow: 25px;
+    box-shadow: 0px 1px 2px 2px rgba(0,0,0,0.2);
+    border-left: 7px solid #27c111;
+}
+.notification-order.show {
+    right: 32px; 
+}
+.history-list {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    padding-right: 14px;
+    margin-top: 13px;
+    background-color: #fffcfc;
+    box-shadow: 0px 3px 6px 6px rgba(0,0,0,0.2);
+}
+.card-header-chitiet, .history-orders-list {
+    text-align: center;
+}
+.product-list-name {
+    padding-bottom: 20px;
+    padding-top: 10px;
+}
+.card-body.history-orders-list .list-order-user-history {
+    margin-top: 13px;
+    margin: -1px;
+    border-top: 2px solid #f1f0f0;
+}
+.infor-order-user-history {
+    /* display: flex; */
+    align-items: center;
+}
+.button-history-orders{
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid red;
+}
+.back-order-statistics {
+    text-decoration: none;
+    font-size: 18px;
+    color: #0a58ca;
+    float: left;
+}

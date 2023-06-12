@@ -19,7 +19,7 @@
                                     @foreach($order_rooms as $order)
                                         @if($order->ma_phong == $val['ma_phong'] && ($order->status == 1 || $order->status == 2))
                                             <div class="order-room-info ps-3 border-bottom">
-                                                <p>Tên khách hàng: <strong> {{$order->name}}</strong></p>
+                                                <p>Khách hàng: <strong> {{$order->name}}</strong></p>
                                                 <p>Số điện thoại: <strong>{{$order->phone}}</strong></p>
                                                 <p>Ngày nhận phòng: <strong class="text-light">{{$order->check_in}}</strong></p>
                                                 <p>Ngày trả phòng: <strong  class="text-info">{{$order->check_out}}</strong></p>
