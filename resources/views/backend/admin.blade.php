@@ -108,17 +108,16 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th>STT</th>
-                                        <th>MS Phòng</th>
+                                        <th>MS phòng</th>
                                         <th>SL đặt</th>
                                     </tr>
                                 </thead>
-                                @foreach ($bestseller as $key => $sp) 
                                     <tr class="text-center">
-                                        <td>{{$key+1}}</td>
-                                        <td>{{$sp->ma_phong}}</td>
-                                        <td>{{$sp->total_amount}}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr> 
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -137,17 +136,21 @@
                         <table class="table">
                             <tbody>
                                 <thead>
-                                    <tr class="text-center text-dark">
+                                    <tr class="text-center">
                                         <th>STT</th>
-                                        <th>Tên Khách hàng</th>
-                                        <th>Số đơn hàng</th>
+                                        <th>Họ tên</th>
+                                        <th>Số điện thoại</th>
+                                        <th>SL đặt</th>
                                     </tr>
                                 </thead>
-                                    <tr class="text-center list-loyal-customer">
-                                        <td></td>
-                                        <td class=""></td>
-                                        <td class=""></td>
-                                    </tr>                                
+                                @foreach ($lyal_customer as $key => $sp) 
+                                    <tr class="text-center">
+                                        <td>{{$key+1}}</td>
+                                        <td>{{$sp->name}}</td>
+                                        <td>{{$sp->phone}}</td>
+                                        <td>{{$sp->total_bookings}}</td>
+                                    </tr> 
+                                @endforeach                             
                             </tbody>
                         </table>
                     </div>

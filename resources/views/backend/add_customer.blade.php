@@ -46,7 +46,19 @@
                     </select>
                     <input type="hidden" name="id" value="">
                 </div>
+            </div>
 
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3" for="">Dịch vụ:</label>
+                <div class='col-9 p-0'>
+                    <select name="name_service" class="form-select" onchange="updateTotalPrice()">
+                        <option value="">Chọn dịch vụ</option>
+                        @foreach($tbl_service as $tbl_services)
+                            <option value="{{$tbl_services->name_service}}" data-price="{{ $tbl_services->price_service }}">{{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ</option>
+                        @endforeach
+                    </select>
+                    <input type="hidden" name="id" value="">
+                </div>
             </div>
 
             <div class="row mt-4">
@@ -102,15 +114,18 @@
     });
 </script>
 <script>
-    function updateTotalPrice() {
-        var stayNights = parseInt(document.getElementsByName("stayNights")[0].value);
-        var selectedOption = document.getElementsByName("ma_phong")[0].options[document.getElementsByName("ma_phong")[0].selectedIndex];
-        var price = parseInt(selectedOption.getAttribute("data-price"));
-        var totalPrice = stayNights * price;
-
-        document.getElementById("totalPrice").innerText = numberWithCommas(totalPrice) + " VNĐ";
+  function updateTotalPrice() {
+    var stayNights = parseInt(document.getElementsByName("stayNights")[0].value);
+    var selectedRoomOption = document.getElementsByName("ma_phong")[0].options[document.getElementsByName("ma_phong")[0].selectedIndex];
+    var roomPrice = parseInt(selectedRoomOption.getAttribute("data-price"));
+    var selectedServiceOption = document.getElementsByName("name_service")[0].options[document.getElementsByName("name_service")[0].selectedIndex];
+    var servicePrice = selectedServiceOption ? parseInt(selectedServiceOption.getAttribute("data-price")) : 0;
+    var totalPrice = stayNights * roomPrice;
+    if (selectedServiceOption && servicePrice > 0) {
+        totalPrice += servicePrice;
     }
-
+    document.getElementById("totalPrice").innerText = numberWithCommas(totalPrice) + " VNĐ";
+  }
     function numberWithCommas(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }

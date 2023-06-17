@@ -49,11 +49,25 @@
                     <input type="hidden" name="id" value="{{ $order_rooms->id }}">
                 </div>
             </div>
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3" for="">Dịch vụ:</label>
+                <div class='col-9 p-0'>
+                    <select name="name_service" class="form-select" onchange="updateTotalPrice()">
+                        <option value="">Chọn dịch vụ</option>
+                        @foreach($tbl_service as $tbl_services)
+                        <option value="{{ $tbl_services->name_service }}" data-price="{{ $tbl_services->price_service }}" {{ $tbl_services->name_service == $order_rooms->name_service ? 'selected' : '' }}>
+                                {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
+                            </option>
+                        @endforeach
+                    </select>
+                    <input type="hidden" name="id" value="">
+                </div>
+            </div>
 
             <div class="row mt-4" id="oldPriceRow">
                 <label class="name-add-room-all col-3" for="">Tổng giá:</label>
                 <div class="col-9 input-add-room">
-                    <span class="input-add-room text-warning fw-bolder">{{ $order_rooms->totalPrice }}</span>
+                    <span class="input-add-room text-warning fw-bolder">{{ number_format($order_rooms->totalPrice) }} VNĐ</span>
                 </div>
             </div>
 
@@ -82,7 +96,9 @@
     function updateTotalPrice() {
         var price = parseFloat(document.querySelector('select[name="ma_phong"]').selectedOptions[0].getAttribute('data-price'));
         var stayNights = parseFloat(document.querySelector('input[name="stayNights"]').value);
-        var totalPrice = price * stayNights;
+        var selectedService = document.querySelector('select[name="name_service"]').selectedOptions[0];
+        var servicePrice = selectedService ? parseFloat(selectedService.getAttribute('data-price')) : 0;
+        var totalPrice = price * stayNights + servicePrice;
         document.getElementById('totalPrice').innerText = totalPrice.toLocaleString('vi-VN') + ' VNĐ';
         document.getElementById('oldPriceRow').style.display = 'none';
         document.getElementById('newPriceRow').style.display = 'block';

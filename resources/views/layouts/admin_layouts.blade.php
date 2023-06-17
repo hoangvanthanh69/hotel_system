@@ -70,7 +70,7 @@
                             <div class="home-filter-button" data-filter="all">
                                 <a class="@yield('sidebar-active-status-room')" href="{{route('quan-ly-trang-thai-phong')}}">
                                     <i class="fas fa-quidditch"></i>
-                                    Trạng thái phòng
+                                    Quản lý đặt phòng
                                 </a>
                             </div>
                         </div>
@@ -86,15 +86,6 @@
                         <br>
                         <div class="home-filter" id="filter_button">
                             <div class="home-filter-button" data-filter="all">
-                                <a class="@yield('sidebar-active-acount')" href="{{route('quan-ly-tai-khoan')}}">
-                                    <i class="fa-solid fa-user"></i>
-                                    Quản lý tài khoản
-                                </a>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="home-filter" id="filter_button">
-                            <div class="home-filter-button" data-filter="all">
                                 <a class="@yield('sidebar-active-service')" href="{{route('quan-ly-dich-vu')}}">
                                 <i class="fa-brands fa-usps"></i>
                                     Quản lý dịch vụ
@@ -104,9 +95,18 @@
                         <br>
                         <div class="home-filter" id="filter_button">
                             <div class="home-filter-button" data-filter="all">
-                                <a class="" href="{{route('admin')}}">
-                                    <i class=" fa fa-home icon-all-admin-nav" aria-hidden="true"></i>
-                                    Quản lý khách hàng
+                                <a class="@yield('sidebar-active-debt')" href="{{route('quan-ly-cong-no')}}">
+                                <i class="fa-solid fa-jug-detergent"></i>
+                                    Quản lý công nợ
+                                </a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="home-filter" id="filter_button">
+                            <div class="home-filter-button" data-filter="all">
+                                <a class="@yield('sidebar-active-acount')" href="{{route('quan-ly-tai-khoan')}}">
+                                    <i class="fa-solid fa-user"></i>
+                                    Quản lý tài khoản
                                 </a>
                             </div>
                         </div>

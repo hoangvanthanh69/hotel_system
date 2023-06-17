@@ -6,6 +6,7 @@ use App\Models\tbl_rooms;
 use App\Models\order_rooms;
 use App\Models\tbl_staff;
 use App\Models\tbl_service;
+use App\Models\tbl_debt;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Session;
 use DB;
@@ -20,10 +21,14 @@ class index_backend extends Controller{
         $count_rooms = tbl_rooms::count();
         $count_order = order_rooms::count();
         $totalOrders = order_rooms::whereIn('status', [2, 3])->sum('totalPrice');
-        $bestseller = order_rooms::select('ma_phong', DB::raw('sum(stayNights) as total_amount'))
-        ->groupBy('ma_phong')->havingRaw('COUNT(*) >= 2')->orderByDesc('total_amount')->get();
+        $lyal_customer = order_rooms::select('phone', 'name', DB::raw('COUNT(*) as total_bookings'))
+            ->groupBy('phone', 'name')
+            ->havingRaw('COUNT(*) >= 2')
+            ->orderByDesc('total_bookings')
+            ->get();
+        ;
         // print_r($bestseller); die;
-        return view('backend.admin',['order_rooms' => $order_rooms], compact('count_rooms', 'count_order', 'totalOrders', 'bestseller'));
+        return view('backend.admin',['order_rooms' => $order_rooms], compact('count_rooms', 'count_order', 'totalOrders', 'lyal_customer'));
     }
 
     // dang nhap admin
@@ -312,12 +317,21 @@ class index_backend extends Controller{
         return redirect()->route('quan-ly-nhan-vien');
     }
 
+    // xóa nhân viên
+    function delete_staff($id){
+        $tbl_staff = tbl_staff::find($id);
+        $tbl_staff->delete();
+        return redirect()->route('quan-ly-nhan-vien')->with('success','Xóa sản phẩm thành công');
+    }
+
     function add_customer() {
         $tbl_rooms = tbl_rooms::whereNotIn('ma_phong', function ($query) {
             $query->select('ma_phong')->from('order_rooms')->whereIn('status', [2]);
         })->get();
-        
-        return view('backend.add_customer', ['tbl_rooms' => $tbl_rooms]);
+        $tbl_service = tbl_service::whereNotIn('name_service', function ($query) {
+            $query->select('name_service')->from('order_rooms')->whereIn('status', [2]);
+        })->get();
+        return view('backend.add_customer', ['tbl_rooms' => $tbl_rooms, 'tbl_service' => $tbl_service]);
     }
 
     // đặt phòng
@@ -336,9 +350,16 @@ class index_backend extends Controller{
         $checkOutDate = clone $checkInDate;
         $checkOutDate->modify("+{$stayNights} days");
         $order_room->check_out = $checkOutDate->format('Y-m-d');
-        // Tính tổng giá tích hợp vào dữ liệu
         $tbl_room = tbl_rooms::where('ma_phong', $order_room->ma_phong)->first();
         $order_room->totalPrice = $stayNights * $tbl_room->price;
+        $nameService = $request->input('name_service');
+        if (!empty($nameService)) {
+            $tbl_service = tbl_service::where('name_service', $nameService)->first();
+            if ($tbl_service) {
+                $order_room->name_service = $tbl_service->name_service;
+                $order_room->totalPrice += $tbl_service->price_service;
+            }
+        }
         $order_room->save();
         return redirect()->route('quan-ly-hd')->with('message', 'Đặt phòng thành công');
     }
@@ -348,8 +369,11 @@ class index_backend extends Controller{
         $tbl_rooms = tbl_rooms::whereNotIn('ma_phong', function ($query) {
             $query->select('ma_phong')->from('order_rooms')->whereIn('status', [2]);
         })->get();
+        $tbl_service = tbl_service::whereNotIn('name_service', function ($query) {
+            $query->select('name_service')->from('order_rooms')->whereIn('status', [2]);
+        })->get();
         $order_rooms = order_rooms::find($id);
-        return view('backend.edit_customer', ['order_rooms' => $order_rooms, 'tbl_rooms' => $tbl_rooms]);
+        return view('backend.edit_customer', ['order_rooms' => $order_rooms, 'tbl_rooms' => $tbl_rooms, 'tbl_service' => $tbl_service]);
     }
     function update_customer(Request $request, $id){
         $order_rooms = order_rooms::find($id);
@@ -357,13 +381,16 @@ class index_backend extends Controller{
         $order_rooms->phone = $request->phone;
         $order_rooms->stayNights = $request->stayNights;
         $order_rooms->ma_phong = $request->ma_phong;
+        $order_rooms->name_service = $request->name_service;
         $order_rooms->check_in = $request->check_in;
         $order_rooms->cccd = $request->cccd;
         $order_rooms->address = $request->address;
         $room = tbl_rooms::where('ma_phong', $request->ma_phong)->first();
+        $service = tbl_service::where('name_service', $request->name_service)->first();
         $price = $room->price;
+        $price_service = $service->price_service;
         $stayNights = $request->stayNights;
-        $totalPrice = $price * $stayNights;
+        $totalPrice = $price * $stayNights + $price_service;
         $order_rooms->totalPrice = $totalPrice;
         $order_rooms->save();
         return redirect()->route('quan-ly-hd');
@@ -394,5 +421,53 @@ class index_backend extends Controller{
         return redirect()->route('quan-ly-dich-vu');
     }
 
+    // chỉnh sửa dịch vụ
+    function edit_service($id){
+        $tbl_service = tbl_service::find($id);
+        return view('backend.edit_service', ['tbl_service' => $tbl_service]);
+    }
+    function update_service(Request $request, $id){
+        $tbl_service = tbl_service::find($id);
+        $tbl_service->type_service = $request->type_service;
+        $tbl_service->name_service = $request->name_service;
+        $tbl_service->price_service = $request->price_service;
+        $tbl_service->note_service = $request->note_service;
+        $tbl_service->save();
+        return redirect()->route('quan-ly-dich-vu');
+    }
 
+    // xoa dich vuj
+    function delete_service($id){
+        $tbl_service = tbl_service::find($id);
+        $tbl_service->delete();
+        return redirect()->route('quan-ly-dich-vu')->with('success','Xóa dịch vụ thành công');
+    }
+
+    // quản lý công nợ
+    function quan_ly_cong_no(){
+        if (!Session::get('admin')) {
+            return redirect()->route('login');
+        }
+        $tbl_debt = tbl_debt::get()->toArray();
+        return view('backend.quan_ly_cong_no', ['tbl_debt' => $tbl_debt]);
+    }
+
+    // thêm công nợ
+    function add_debt(){
+        if(!Session::get('admin')){
+            return redirect()->route('login');
+        }
+        return view('backend.add_debt');
+    }
+    function add_debts(Request $request){
+        $data = $request->all();
+        $tbl_debt = new tbl_debt;
+        $tbl_debt->name = $data['name'];
+        $tbl_debt->ms_phong = $data['ms_phong'];
+        $tbl_debt->check_in = $data['check_in'];
+        $tbl_debt->check_out = $data['check_out'];
+        $tbl_debt->debt = $data['debt'];
+        $tbl_debt -> save();
+        return redirect()->route('quan-ly-cong-no'); 
+    }
 }

@@ -35,7 +35,7 @@
                         <th>SĐT</th>
                         <th>MS Phòng</th>
                         <th>Số đêm</th>
-                        <th>Giá phòng</th>
+                        <th>Dịch vụ</th>
                         <th>Tổng giá</th>
                         <th>Thời gian đặt</th>
                         <th>Check_in</th>
@@ -53,7 +53,13 @@
                                 <td>{{$val['phone']}}</td>
                                 <td>{{$val['ma_phong']}}</td>
                                 <td>{{$val['stayNights']}}</td>
-                                <td>{{number_format($val['price'])}} VNĐ</td>
+                                <td>
+                                    @if ($val['name_service'] !== null)
+                                        {{$val['name_service']}}
+                                    @else
+                                        null
+                                    @endif
+                                </td>
                                 <td class="">{{number_format($val['totalPrice'])}} VNĐ</td>
                                 <td>{{$val['created_at']}}</td>
                                 <td>{{$val['check_in']}}</td>

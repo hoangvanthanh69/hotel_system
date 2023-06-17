@@ -1,16 +1,16 @@
 @extends('layouts.admin_layouts')
-@section('sidebar-active-service', 'active' )
+@section('sidebar-active-debt', 'active' )
 @section('content')
 <div>
     <div class="card mb-3 product-list" data-item="product">
         <div class="card-header">
-            <span class="product-list-name btnbtn">Admin / Dịch vụ</span>
+            <span class="product-list-name btnbtn">Admin / Công nợ</span>
         </div>
         <div class="card-body">
             <div class="table-responsive table-list-product">
                 <div class="search-option-infor-amdin">
                     <div class="search-infor-amdin-form-room">
-                        <a class="add-room" href="{{route('add-service')}}">Thêm dịch vụ</a>
+                        <a class="add-room" href="{{route('add-debt')}}">Thêm công nợ</a>
                     </div>
                     <div class="search-infor-amdin-form-room">
                         <form action="" method="GET" class="header-with-search-form">
@@ -26,24 +26,26 @@
                     <thead>
                         <tr class="tr-name-table bg-success">
                             <th>STT</th>
-                            <th>Tên dịch vụ</th>
-                            <th>Loại dịch vụ</th>
-                            <th>Đơn giá</th>
-                            <th>Ghi chú </th>
+                            <th>Tên khách hàng</th>
+                            <th>MS phòng</th>
+                            <th>Ngày đặt</th>
+                            <th>Ngày trả phòng</th>
+                            <th>Tiền còn nợ</th>
                             <th>Chức Năng</th>
                         </tr>
                     </thead>
                     
                     <tbody class="infor">
-                        @foreach($tbl_service as $key => $val)
+                        @foreach($tbl_debt as $key => $val)
                             <tr class="text-center">
                                 <td>{{$key+1}}</td>
-                                <td>{{$val['type_service']}}</td>
-                                <td>{{$val['name_service']}}</td>
-                                <td>{{number_format($val['price_service'])}} VNĐ</td>
-                                <td>{{$val['note_service']}}</td>
+                                <td>{{$val['name']}}</td>
+                                <td>{{$val['ms_phong']}}</td>
+                                <td>{{$val['check_in']}}</td>
+                                <td>{{$val['check_out']}}</td>
+                                <td>{{$val['debt']}}</td>
                                 <td class="d-flex ps-4">
-                                    <form action="{{route('edit-service', $val['id'])}}" class="text-center">
+                                    <form action="" class="text-center">
                                         <button class="summit-add-room-button" type='submit'>
                                             <i class="fa fa-wrench icon-wrench" aria-hidden="true"></i>
                                         </button>

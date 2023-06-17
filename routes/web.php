@@ -97,6 +97,9 @@ Route::post('add-staffs', [index_backend::class, 'add_staffs'])->name('add-staff
 Route::get('/edit-staff/{id}', [index_backend::class, 'edit_staff'])->name('edit-staff');
 Route::post('/update-staff/{id}', [index_backend::class, 'update_staff'] )->name('update-staff');
 
+// xóa nhân viên
+Route::get('/delete-staff/{id}', [index_backend::class, 'delete_staff'] )->name('delete-staff');
+
 // thêm khách hàng mới
 Route::get('/add-customer', [index_backend::class, 'add_customer'])->name('add-customer');
 
@@ -108,3 +111,17 @@ Route::post('/update-customer/{id}', [index_backend::class, 'update_customer'] )
 Route::get('/quan-ly-dich-vu', [index_backend::class,'quan_ly_dich_vu'])->name('quan-ly-dich-vu');
 Route::get('/add-service', [index_backend::class,'add_service'])->name('add-service');
 Route::post('add-services', [index_backend::class, 'add_services'])->name('add-services');
+
+// chỉnh sửa dịch vụ
+Route::get('/edit-service/{id}', [index_backend::class, 'edit_service'])->name('edit-service');
+Route::post('/update-service/{id}', [index_backend::class, 'update_service'] )->name('update-service');
+
+// xóa dịch vụ 
+Route::get('/delete-service/{id}', [index_backend::class, 'delete_service'] )->name('delete-service');
+
+// quản lý công nợ
+Route::get('/quan-ly-cong-no', [index_backend::class,'quan_ly_cong_no'])->name('quan-ly-cong-no');
+
+// thêm công nợ
+Route::get('/add-debt', [index_backend::class, 'add_debt'])->name('add-debt');
+Route::post('/add-debts', [index_backend::class, 'add_debts'])->name('add-debts');
