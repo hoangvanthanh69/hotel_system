@@ -116,7 +116,7 @@
 
                         <a href="{{route('order-history')}}">
                             <button class="btnbtn home-filter-button @yield('sidebar-active-history')" >
-                                Lịch sử đơn hàng
+                                Lịch sử đặt phòng
                             </button>
                         </a>
 

@@ -49,7 +49,7 @@
                             <td class="d-flex ps-4">
                                 <form action="{{route('edit-staff', $val['id'])}}" class="text-center">
                                     <button class="summit-add-room-button" type='submit'>
-                                        <i class="fa fa-wrench icon-wrench" aria-hidden="true"></i>
+                                        <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                 </form>
                                 

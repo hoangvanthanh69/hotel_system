@@ -30,10 +30,22 @@
                                 <td>{{$val['check_in']}}</td>
                                 <td>{{$val['check_out']}}</td>
                                 <td>
-                                    {{$val['status']}}
-                                    <a href="{{route('cancel_order',['id' => $val['id']])}}}">
-                                        <i class="fa-solid fa-xmark fs-5 text-danger"></i>
-                                    </a>
+                                <?php 
+                                    if ($val['status'] == 1) {
+                                        echo '<span style="color: orange;">chở tiếp nhận</span>';
+                                        echo "<a href='" . route('cancel_order', ['id' => $val['id']]) . "'class='btn-cancel-order'>Hủy đơn</a>";
+                                    }
+                                    else if ($val['status'] == 2) {
+                                                echo '<span style="color: #52de20;">đã nhận phòng</span>';
+                                    }
+                                    else if ($val['status'] == 3) {
+                                        echo '<span style="color: #198754;">đã trả phòng</span>';
+                                    }
+                                    else if ($val['status'] == 4) {
+                                        echo '<span style="color: red;">Đã hủy</span>';
+                                    }
+                                    ?>
+                                    
                                 </td>
                             </tr>
                         </tbody>

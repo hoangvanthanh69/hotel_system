@@ -5,7 +5,7 @@ use App\Models\tbl_customer;
 use App\Models\tbl_rooms;
 use App\Models\order_rooms;
 use Session;
-
+use DB; 
 
 class index_frontend extends Controller{
     //dang nhap
@@ -58,7 +58,15 @@ class index_frontend extends Controller{
 
     // trang home khachs hang
     function home(){
-        return view('frontend.home');
+        $best_seller = order_rooms::select('ma_phong', DB::raw('COUNT(*) as total_bookings'))
+            ->groupBy('ma_phong')
+            ->havingRaw('COUNT(*) >= 1')
+            ->orderByDesc('total_bookings')
+            ->get();
+        ;
+        // print_r($best_seller); die;
+        $tbl_rooms = tbl_rooms::get()->toArray();
+        return view('frontend.home', ['tbl_rooms' => $tbl_rooms, 'best_seller' => $best_seller]);
     }
 
     // chi tiet phong
@@ -127,14 +135,15 @@ class index_frontend extends Controller{
 
     // hủy đơn hàng
     function cancelOrder($id) {
-        $order_rooms = order_rooms::find($id);
-        if ($order_rooms) {
-              $order_rooms->status = 4; // đã hủy
-              $order_rooms->save();
-            return redirect()->route('order-history')->with('message', 'Đã hủy đơn hàng thành công');
-        } else {
-              return redirect()->route('order-history')->with('message', 'Không tìm thấy đơn hàng');
-        }
+        $order_room = order_rooms::find($id);
+        $order_room->status = 4; 
+        $order_room->save();
+        return redirect()->route('order-history')->with('message', 'Đã hủy đơn hàng thành công');
+    
+    }
+    // giới thiệu
+    function introduce(){
+        return view('frontend.introduce');
     }
     
 }

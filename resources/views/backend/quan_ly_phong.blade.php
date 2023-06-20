@@ -60,7 +60,7 @@
                                 <td class="function-icon">
                                     <form action="{{route('edit-rooms', $val['id'])}}">
                                         <button class="summit-add-room-button" type='submit'>
-                                            <i class="fa fa-wrench icon-wrench" aria-hidden="true"></i>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                     </form>
                                     

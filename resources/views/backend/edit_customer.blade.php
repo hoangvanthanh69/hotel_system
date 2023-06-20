@@ -50,36 +50,40 @@
                 </div>
             </div>
             <div class="row mt-4">
-                <label class="name-add-room-all col-3" for="">Dịch vụ:</label>
-                <div class='col-9 p-0'>
-                    <select name="name_service" class="form-select" onchange="updateTotalPrice()">
-                        <option value="">Chọn dịch vụ</option>
-                        @foreach($tbl_service as $tbl_services)
-                        <option value="{{ $tbl_services->name_service }}" data-price="{{ $tbl_services->price_service }}" {{ $tbl_services->name_service == $order_rooms->name_service ? 'selected' : '' }}>
+                <label class="name-add-room-all col-3">Dịch vụ</label>
+                <div class="col-9">
+                    @foreach($tbl_service as $tbl_services)
+                        <div class="form-check d-flex mt-2">
+                            <input class="form-check-input ps-3" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label col-8" for="flexCheckDefault">
                                 {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
-                            </option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" name="id" value="">
-                </div>
-            </div>
+                            </label>
+                            <input type="number" class="col-5">
+                        </div>
+                        
+                    @endforeach
+                    <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
 
+               </div>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
+                    Nợ
+                </label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                <label class="form-check-label" for="flexRadioDefault2">
+                    Đã thanh toán
+                </label>
+            </div>
             <div class="row mt-4" id="oldPriceRow">
                 <label class="name-add-room-all col-3" for="">Tổng giá:</label>
                 <div class="col-9 input-add-room">
                     <span class="input-add-room text-warning fw-bolder">{{ number_format($order_rooms->totalPrice) }} VNĐ</span>
                 </div>
             </div>
-
-            <div class="row mt-4" id="newPriceRow" style="display: none;">
-                <div class="d-flex">
-                    <label class="name-add-room-all col-3" for="">Tổng giá:</label>
-                    <div class="col-9 input-add-room">
-                        <span class="input-add-room text-warning fw-bolder" id="totalPrice">{{ $order_rooms->totalPrice }}</span>
-                    </div>
-                </div>
-            </div>
-
             <div class="back-add-room">
               <a class="back-rooms" href="{{route('quan-ly-hd')}}">Hủy</a>
               <button class="add-room button-add-room-save" type="submit">Cập nhật</button>
@@ -87,11 +91,13 @@
         </form>
     </div>
 </div>
+
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{{asset('frontend/js/jquery.validate.js')}}"></script>
+
 <script>
     function updateTotalPrice() {
         var price = parseFloat(document.querySelector('select[name="ma_phong"]').selectedOptions[0].getAttribute('data-price'));

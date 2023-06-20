@@ -485,3 +485,6 @@ input.form-control:focus {
     color: #0a58ca;
     float: left;
 }
+.carousel-inner.img-item img {
+    object-fit: none;
+}

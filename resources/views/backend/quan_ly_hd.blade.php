@@ -54,10 +54,10 @@
                                 <td>{{$val['ma_phong']}}</td>
                                 <td>{{$val['stayNights']}}</td>
                                 <td>
-                                    @if ($val['name_service'] !== null)
+                                    @if ($val['name_service'])
                                         {{$val['name_service']}}
                                     @else
-                                        null
+                                        
                                     @endif
                                 </td>
                                 <td class="">{{number_format($val['totalPrice'])}} VNĐ</td>
@@ -65,18 +65,25 @@
                                 <td>{{$val['check_in']}}</td>
                                 <td>{{$val['check_out']}}</td>
                                 <td>
-                                    @if($val->status == 1)
-                                        chở tiếp nhận
-                                    @elseif($val->status == 2)
-                                        đã nhận phòng
-                                    @elseif($val->status == 3)
-                                        đã trả phòng
-                                    @endif
+                                <?php 
+                                    if ($val['status'] == 1) {
+                                                echo '<span style="color: orange;">chở tiếp nhận</span>';
+                                    }
+                                    else if ($val['status'] == 2) {
+                                                echo '<span style="color: #52de20;">đã nhận phòng</span>';
+                                    }
+                                    else if ($val['status'] == 3) {
+                                        echo '<span style="color: #198754;">đã trả phòng</span>';
+                                    }
+                                    else if ($val['status'] == 4) {
+                                        echo '<span style="color: red;">Đã hủy</span>';
+                                    }
+                                    ?>
                                 </td>
                                 <td class="d-flex ps-4">
                                     <form action="{{route('edit-customer', $val['id'])}}" class="text-center">
                                         <button class="summit-add-room-button" type='submit'>
-                                            <i class="fa fa-wrench icon-wrench" aria-hidden="true"></i>
+                                            <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                     </form>
                                     <form action="{{route('delete-order', $val['id'])}}">

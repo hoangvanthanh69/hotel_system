@@ -328,9 +328,7 @@ class index_backend extends Controller{
         $tbl_rooms = tbl_rooms::whereNotIn('ma_phong', function ($query) {
             $query->select('ma_phong')->from('order_rooms')->whereIn('status', [2]);
         })->get();
-        $tbl_service = tbl_service::whereNotIn('name_service', function ($query) {
-            $query->select('name_service')->from('order_rooms')->whereIn('status', [2]);
-        })->get();
+        $tbl_service = tbl_service::get();
         return view('backend.add_customer', ['tbl_rooms' => $tbl_rooms, 'tbl_service' => $tbl_service]);
     }
 
@@ -354,7 +352,7 @@ class index_backend extends Controller{
         $order_room->totalPrice = $stayNights * $tbl_room->price;
         $nameService = $request->input('name_service');
         if (!empty($nameService)) {
-            $tbl_service = tbl_service::where('name_service', $nameService)->first();
+            $tbl_service = tbl_service::where('name_service', $nameService);
             if ($tbl_service) {
                 $order_room->name_service = $tbl_service->name_service;
                 $order_room->totalPrice += $tbl_service->price_service;
@@ -369,9 +367,7 @@ class index_backend extends Controller{
         $tbl_rooms = tbl_rooms::whereNotIn('ma_phong', function ($query) {
             $query->select('ma_phong')->from('order_rooms')->whereIn('status', [2]);
         })->get();
-        $tbl_service = tbl_service::whereNotIn('name_service', function ($query) {
-            $query->select('name_service')->from('order_rooms')->whereIn('status', [2]);
-        })->get();
+        $tbl_service = tbl_service::get();
         $order_rooms = order_rooms::find($id);
         return view('backend.edit_customer', ['order_rooms' => $order_rooms, 'tbl_rooms' => $tbl_rooms, 'tbl_service' => $tbl_service]);
     }
