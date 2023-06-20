@@ -66,7 +66,7 @@
                                 <td>{{$val['check_out']}}</td>
                                 <td>
                                     @if($val->status == 1)
-                                        đang xử lý
+                                        chở tiếp nhận
                                     @elseif($val->status == 2)
                                         đã nhận phòng
                                     @elseif($val->status == 3)

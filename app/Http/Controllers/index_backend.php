@@ -470,4 +470,21 @@ class index_backend extends Controller{
         $tbl_debt -> save();
         return redirect()->route('quan-ly-cong-no'); 
     }
+
+    // chỉnh sửa công nợ
+    function edit_debt($id){
+        $tbl_debt = tbl_debt::find($id);
+        return view('backend.edit_debt', ['tbl_debt' => $tbl_debt]);
+    }
+
+    function update_debt(Request $request, $id){
+        $tbl_debt = tbl_debt::find($id);
+        $tbl_debt -> name = $request -> name;
+        $tbl_debt -> ms_phong = $request -> ms_phong;
+        $tbl_debt -> check_in = $request -> check_in;
+        $tbl_debt -> check_out = $request -> check_out;
+        $tbl_debt -> debt = $request -> debt;
+        $tbl_debt -> save();
+        return redirect()->route('quan-ly-cong-no');
+    }
 }

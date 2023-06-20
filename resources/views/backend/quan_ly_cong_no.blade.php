@@ -43,9 +43,9 @@
                                 <td>{{$val['ms_phong']}}</td>
                                 <td>{{$val['check_in']}}</td>
                                 <td>{{$val['check_out']}}</td>
-                                <td>{{$val['debt']}}</td>
+                                <td>{{number_format($val['debt'])}} VNĐ</td>
                                 <td class="d-flex ps-4">
-                                    <form action="" class="text-center">
+                                    <form action="{{route('edit-debt', $val['id'])}}" class="text-center">
                                         <button class="summit-add-room-button" type='submit'>
                                             <i class="fa fa-wrench icon-wrench" aria-hidden="true"></i>
                                         </button>

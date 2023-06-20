@@ -74,6 +74,8 @@ Route::get('searchrooms', [index_backend::class, 'searchrooms'])->name('admin.se
 
 // dat phong
 Route::post('/order-rooms', [index_backend::class, 'order_rooms'] )->name('order-rooms');
+Route::post('/order-room', [index_frontend::class, 'order_room'] )->name('order-room');
+
 
 // xóa đơn hàng
 Route::get('/delete-order/{id}/order_rooms', [index_backend::class, 'delete_order'] )->name('delete-order');
@@ -125,3 +127,10 @@ Route::get('/quan-ly-cong-no', [index_backend::class,'quan_ly_cong_no'])->name('
 // thêm công nợ
 Route::get('/add-debt', [index_backend::class, 'add_debt'])->name('add-debt');
 Route::post('/add-debts', [index_backend::class, 'add_debts'])->name('add-debts');
+
+// chỉnh sửa công nợ
+Route::get('/edit-debt/{id}', [index_backend::class, 'edit_debt'])->name('edit-debt');
+Route::post('/update-debt/{id}', [index_backend::class, 'update_debt'] )->name('update-debt');
+
+// hủy đơn đặt
+Route::get('/cancel_order/{id}', [index_frontend::class, 'cancelOrder'])->name('cancel_order');
