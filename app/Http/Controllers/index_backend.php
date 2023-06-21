@@ -94,10 +94,25 @@ class index_backend extends Controller{
                 $order->status = 3;
                 $order->save();
             }
+            $selectedServices = json_decode($order->selected_services, true);
+            $services = [];
+            foreach ($selectedServices as $service) {
+                $serviceId = $service['name_service'];
+                $quantity = $service['service_quantities'];
+                $serviceModel = tbl_service::find($serviceId);
+                
+                if ($serviceModel) {
+                    $serviceName = $serviceModel->name_service;
+                    $services[] = [
+                        'name_service' => $serviceName,
+                        'service_quantities' => $quantity,
+                    ];
+                }
+            }
+            $order->selected_services = $services;
         }
         return view('backend.quan_ly_hd', ['order_rooms' => $order_rooms]);
     }
-    
     
     // quan ly trang thai phong
     function quan_ly_trang_thai_phong(){
@@ -342,6 +357,9 @@ class index_backend extends Controller{
         $order_room->check_in = $request->input('check_in');
         $order_room->cccd = $request->input('cccd');
         $order_room->address = $request->input('address');
+
+        $order_room->debt_status = $request->input('debt_status');
+
         $order_room->status = 1;
         $checkInDate = new \DateTime($order_room->check_in);
         $stayNights = $order_room->stayNights;
@@ -350,44 +368,56 @@ class index_backend extends Controller{
         $order_room->check_out = $checkOutDate->format('Y-m-d');
         $tbl_room = tbl_rooms::where('ma_phong', $order_room->ma_phong)->first();
         $order_room->totalPrice = $stayNights * $tbl_room->price;
-        $nameService = $request->input('name_service');
-        if (!empty($nameService)) {
-            $tbl_service = tbl_service::where('name_service', $nameService);
-            if ($tbl_service) {
-                $order_room->name_service = $tbl_service->name_service;
-                $order_room->totalPrice += $tbl_service->price_service;
+        $selectedServices = $request->input('name_service');
+        $serviceQuantities = $request->input('service_quantities');
+        $services = [];
+        if (!empty($selectedServices)) {
+            foreach ($selectedServices as $index => $service) {
+                $services[] = [
+                    'name_service' => $service,
+                    'service_quantities' => $serviceQuantities[$index]
+                ];
             }
         }
+        $order_room->selected_services = json_encode($services);
         $order_room->save();
         return redirect()->route('quan-ly-hd')->with('message', 'Đặt phòng thành công');
     }
+    
 
     // edit đơn đặt phòng của khách hàng
     function edit_customer($id){
         $tbl_rooms = tbl_rooms::whereNotIn('ma_phong', function ($query) {
             $query->select('ma_phong')->from('order_rooms')->whereIn('status', [2]);
         })->get();
-        $tbl_service = tbl_service::get();
+        $tbl_service = tbl_service::all();
         $order_rooms = order_rooms::find($id);
-        return view('backend.edit_customer', ['order_rooms' => $order_rooms, 'tbl_rooms' => $tbl_rooms, 'tbl_service' => $tbl_service]);
+        $selectedServices = [];
+
+    $selectedServicesData = $order_rooms->selected_services;
+    if (!empty($selectedServicesData)) {
+        $selectedServices = json_decode($selectedServicesData, true);
     }
+        return view('backend.edit_customer', ['order_rooms' => $order_rooms, 'tbl_rooms' => $tbl_rooms, 'tbl_service' => $tbl_service, 'selectedServices' => $selectedServices]);
+    }
+
     function update_customer(Request $request, $id){
         $order_rooms = order_rooms::find($id);
         $order_rooms->name = $request->name;
         $order_rooms->phone = $request->phone;
         $order_rooms->stayNights = $request->stayNights;
         $order_rooms->ma_phong = $request->ma_phong;
-        $order_rooms->name_service = $request->name_service;
         $order_rooms->check_in = $request->check_in;
         $order_rooms->cccd = $request->cccd;
         $order_rooms->address = $request->address;
         $room = tbl_rooms::where('ma_phong', $request->ma_phong)->first();
         $service = tbl_service::where('name_service', $request->name_service)->first();
         $price = $room->price;
-        $price_service = $service->price_service;
+        // $price_service = $service->price_service;
         $stayNights = $request->stayNights;
-        $totalPrice = $price * $stayNights + $price_service;
-        $order_rooms->totalPrice = $totalPrice;
+        // $totalPrice = $price * $stayNights + $price_service;
+        // $order_rooms->totalPrice = $totalPrice;
+        $order_rooms->debt_status = $request->debt_status;
         $order_rooms->save();
         return redirect()->route('quan-ly-hd');
     }

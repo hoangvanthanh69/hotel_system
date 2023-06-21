@@ -120,7 +120,7 @@ class index_frontend extends Controller{
         if ($availableOrder) {
             return redirect()->back()->with('error', 'Phòng không trống trong ngày này.');
         }
-    
+        $order_room->selected_services = '[]';
         $order_room->save();
         return redirect()->route('rooms-customer')->with('message', 'Đặt phòng thành công');
     }

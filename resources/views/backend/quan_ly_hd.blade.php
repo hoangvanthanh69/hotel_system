@@ -41,24 +41,26 @@
                         <th>Check_in</th>
                         <th>Check_out</th>
                         <th>Trạng thái</th>
+                        <th>Thanh toán</th>
                         <th>Chức Năng</th>
                     </tr>
                     </thead>
                     
                     <tbody class="infor">
-                        @foreach($order_rooms as $key => $val)
+                        @foreach($order_rooms as $val)
                             <tr class="text-center">
-                                <td>{{$key+1}}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{$val['name']}}</td>
                                 <td>{{$val['phone']}}</td>
                                 <td>{{$val['ma_phong']}}</td>
                                 <td>{{$val['stayNights']}}</td>
                                 <td>
-                                    @if ($val['name_service'])
-                                        {{$val['name_service']}}
-                                    @else
-                                        
-                                    @endif
+                                    @foreach ($val->selected_services as $service)         
+                                    <div>
+                                        {{ $service['name_service'] }} |
+                                        {{ $service['service_quantities'] }}
+                                    </div>
+                                    @endforeach
                                 </td>
                                 <td class="">{{number_format($val['totalPrice'])}} VNĐ</td>
                                 <td>{{$val['created_at']}}</td>
@@ -78,6 +80,12 @@
                                     else if ($val['status'] == 4) {
                                         echo '<span style="color: red;">Đã hủy</span>';
                                     }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php 
+                                        if ($val['debt_status'] == 1) {echo '<span>Nợ</span>';}
+                                        else if ($val['debt_status'] == 2) {echo '<span>đã thanh toán</span>';}
                                     ?>
                                 </td>
                                 <td class="d-flex ps-4">

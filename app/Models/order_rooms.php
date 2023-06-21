@@ -12,6 +12,10 @@ class order_rooms extends Model
     protected $table = 'order_rooms';
     protected $fillable = [
         'id', 'name', 'phone', 'ma_phong', 'stayNights', 'totalPrice', 'check_in', 'check_out', 'status', 'cccd', 'address',
-         'name_service', 'user_id'
+        'user_id', 'debt_status', 'service_quantities'
     ];
+    
+
+
+
 }

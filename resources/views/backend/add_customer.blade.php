@@ -49,21 +49,34 @@
             </div>
 
             <div class="row mt-4">
-                <label class="name-add-room-all col-3" for="">Dịch vụ:</label>
-                <div class='col-9 p-0'>
-                    <select name="name_service" class="form-select" onchange="updateTotalPrice()">
-                        <option value="">Chọn dịch vụ</option>
-                        @foreach($tbl_service as $tbl_services)
-                            <option value="{{$tbl_services->name_service}}" data-price="{{ $tbl_services->price_service }}">{{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ</option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" name="id" value="">
-                </div>
+              <label class="name-add-room-all col-3">Dịch vụ</label>
+              <div class="col-9">
+                  @foreach($tbl_service as $tbl_services)
+                      <div class="form-check d-flex mt-2">
+                          <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}">
+                          <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
+                              {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
+                          </label>
+                          <input type="number" class="col-5" name="service_quantities[]">
+                      </div>
+                  @endforeach
+                  <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
+              </div>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="debt_status" id="debt" value="1">
+              <label class="form-check-label" for="debt">Nợ</label>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="debt_status" id="paid" value="2" checked>
+              <label class="form-check-label" for="paid">Đã thanh toán</label>
             </div>
 
             <div class="row mt-4">
-                <label class="name-add-room-all col-3" for="">Tổng giá:</label>
-                <span class="input-add-room col-9 text-warning fw-bolder" id="totalPrice"></span>
+              <label class="name-add-room-all col-3" for="">Tổng giá:</label>
+              <span class="input-add-room col-9 text-warning fw-bolder" id="totalPrice"></span>
             </div>
 
             <div class="back-add-room">

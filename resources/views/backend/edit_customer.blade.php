@@ -49,35 +49,41 @@
                     <input type="hidden" name="id" value="{{ $order_rooms->id }}">
                 </div>
             </div>
+
             <div class="row mt-4">
                 <label class="name-add-room-all col-3">Dịch vụ</label>
                 <div class="col-9">
                     @foreach($tbl_service as $tbl_services)
-                        <div class="form-check d-flex mt-2">
-                            <input class="form-check-input ps-3" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label col-8" for="flexCheckDefault">
-                                {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
-                            </label>
-                            <input type="number" class="col-5">
-                        </div>
-                        
+                    <div class="form-check d-flex mt-2">
+                        @php
+                        $serviceId = $tbl_services->id;
+                        $isChecked = in_array($serviceId, array_column($selectedServices, 'name_service'));
+                        $quantity = 0;
+                        if ($isChecked) {
+                            $index = array_search($serviceId, array_column($selectedServices, 'name_service'));
+                            $quantity = $selectedServices[$index]['service_quantities'];
+                        }
+                        @endphp
+                        <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}" @if($isChecked) checked @endif>
+                        <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
+                            {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
+                        </label>
+                        <input type="number" class="col-5" name="service_quantities[]" value="{{ $quantity }}">
+                    </div>
                     @endforeach
-                    <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
-
-               </div>
+                    <a class="fs-5 text-decoration-none" href="{{ route('add-service') }}">Thêm dịch vụ</a>
+                </div>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Nợ
-                </label>
-                </div>
-                <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Đã thanh toán
-                </label>
+                <input class="form-check-input" type="radio" name="debt_status" id="debt" value="1" {{ $order_rooms->debt_status == 1 ? 'checked' : '' }}>
+                <label class="form-check-label" for="debt">Nợ</label>
             </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="debt_status" id="paid" value="2" {{ $order_rooms->debt_status == 2 ? 'checked' : '' }}>
+                <label class="form-check-label" for="paid">Đã thanh toán</label>
+            </div>
+
             <div class="row mt-4" id="oldPriceRow">
                 <label class="name-add-room-all col-3" for="">Tổng giá:</label>
                 <div class="col-9 input-add-room">
