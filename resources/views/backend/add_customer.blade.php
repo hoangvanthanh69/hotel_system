@@ -36,19 +36,6 @@
             </div>
 
             <div class="row mt-4">
-                <label class="name-add-room-all col-3" for="">MS phòng:</label>
-                <div class='col-9 p-0'>
-                    <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
-                        <option value="">Chọn Phòng</option>
-                        @foreach($tbl_rooms as $tbl_room)
-                            <option value="{{$tbl_room->ma_phong}}" data-price="{{ $tbl_room->price }}">{{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ</option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" name="id" value="">
-                </div>
-            </div>
-
-            <div class="row mt-4">
               <label class="name-add-room-all col-3">Dịch vụ</label>
               <div class="col-9">
                   @foreach($tbl_service as $tbl_services)
@@ -62,6 +49,19 @@
                   @endforeach
                   <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
               </div>
+            </div>
+
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3" for="">MS phòng:</label>
+                <div class='col-9 p-0'>
+                    <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
+                        <option value="">Chọn Phòng</option>
+                        @foreach($tbl_rooms as $tbl_room)
+                            <option value="{{$tbl_room->ma_phong}}" data-price="{{ $tbl_room->price }}">{{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ</option>
+                        @endforeach
+                    </select>
+                    <input type="hidden" name="id" value="">
+                </div>
             </div>
 
             <div class="form-check">
@@ -131,15 +131,31 @@
     var stayNights = parseInt(document.getElementsByName("stayNights")[0].value);
     var selectedRoomOption = document.getElementsByName("ma_phong")[0].options[document.getElementsByName("ma_phong")[0].selectedIndex];
     var roomPrice = parseInt(selectedRoomOption.getAttribute("data-price"));
-    var selectedServiceOption = document.getElementsByName("name_service")[0].options[document.getElementsByName("name_service")[0].selectedIndex];
-    var servicePrice = selectedServiceOption ? parseInt(selectedServiceOption.getAttribute("data-price")) : 0;
+    var selectedServiceOptions = document.querySelectorAll("input[name='name_service[]']:checked");
     var totalPrice = stayNights * roomPrice;
-    if (selectedServiceOption && servicePrice > 0) {
-        totalPrice += servicePrice;
-    }
+
+    selectedServiceOptions.forEach(function(option) {
+        var servicePrice = parseInt(option.nextElementSibling.innerText.match(/Giá (\d+)/)[1]);
+        var quantity = parseInt(option.nextElementSibling.nextElementSibling.value);
+        totalPrice += servicePrice * quantity;
+    });
+
     document.getElementById("totalPrice").innerText = numberWithCommas(totalPrice) + " VNĐ";
+}
+
+function numberWithCommas(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Thêm sự kiện change cho các phần tử liên quan
+document.getElementsByName("stayNights")[0].addEventListener("change", updateTotalPrice);
+document.getElementsByName("ma_phong")[0].addEventListener("change", updateTotalPrice);
+var serviceOptions = document.querySelectorAll("input[name='name_service[]']");
+serviceOptions.forEach(function(option) {
+    option.addEventListener("change", updateTotalPrice);
+});
+
+  function numberWithCommas(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
-    function numberWithCommas(number) {
-        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 </script>

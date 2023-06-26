@@ -36,64 +36,67 @@
             </div>
 
             <div class="row mt-4">
-                <label class="name-add-room-all col-3" for="">MS phòng:</label>
-                <div class="col-9 p-0">
-                    <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
-                        <option value="">Chọn Phòng</option>
-                        @foreach($tbl_rooms as $tbl_room)
-                            <option value="{{ $tbl_room->ma_phong }}" data-price="{{ $tbl_room->price }}" {{ $tbl_room->ma_phong == $order_rooms->ma_phong ? 'selected' : '' }}>
-                                {{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ
-                            </option>
-                        @endforeach
-                    </select>
-                    <input type="hidden" name="id" value="{{ $order_rooms->id }}">
-                </div>
-            </div>
+    <label class="name-add-room-all col-3" for="">MS phòng:</label>
+    <div class="col-9 p-0">
+        <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
+            <option value="">Chọn Phòng</option>
+            @foreach($tbl_rooms as $tbl_room)
+                <option value="{{ $tbl_room->ma_phong }}" data-price="{{ $tbl_room->price }}" {{ $tbl_room->ma_phong == $order_rooms->ma_phong ? 'selected' : '' }}>
+                    {{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ
+                </option>
+            @endforeach
+        </select>
+        <input type="hidden" name="id" value="{{ $order_rooms->id }}">
+    </div>
+</div>
 
-            <div class="row mt-4">
-                <label class="name-add-room-all col-3">Dịch vụ</label>
-                <div class="col-9">
-                    @foreach($tbl_service as $tbl_services)
-                    <div class="form-check d-flex mt-2">
-                        @php
-                        $serviceId = $tbl_services->id;
-                        $isChecked = in_array($serviceId, array_column($selectedServices, 'name_service'));
-                        $quantity = 0;
-                        if ($isChecked) {
-                            $index = array_search($serviceId, array_column($selectedServices, 'name_service'));
-                            $quantity = $selectedServices[$index]['service_quantities'];
-                        }
-                        @endphp
-                        <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}" @if($isChecked) checked @endif>
-                        <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
-                            {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
-                        </label>
-                        <input type="number" class="col-5" name="service_quantities[]" value="{{ $quantity }}">
-                    </div>
-                    @endforeach
-                    <a class="fs-5 text-decoration-none" href="{{ route('add-service') }}">Thêm dịch vụ</a>
-                </div>
+<div class="row mt-4">
+    <label class="name-add-room-all col-3">Dịch vụ</label>
+    <div class="col-9">
+        @foreach($tbl_service as $tbl_services)
+            <div class="form-check d-flex mt-2">
+                @php
+                    $serviceId = $tbl_services->id;
+                    $isChecked = in_array($serviceId, array_column($selectedServices, 'id'));
+                    $quantity = 0;
+                    if ($isChecked) {
+                        $index = array_search($serviceId, array_column($selectedServices, 'id'));
+                        $quantity = $selectedServices[$index]['service_quantities'];
+                    }
+                    $servicePrice = $tbl_services->price_service;
+                    $serviceTotalPrice = $servicePrice * $quantity;
+                @endphp
+                <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}" @if($isChecked) checked @endif>
+                <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
+                    {{ $tbl_services->name_service }} - Giá {{ number_format($servicePrice) }} VNĐ
+                </label>
+                <input type="number" class="col-5" name="service_quantities[]" min="0" value="{{ $quantity }}" onchange="updateTotalPrice()">
+                <input type="hidden" class="service-total-price" data-price="{{ $servicePrice }}" value="{{ $serviceTotalPrice }}">
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="debt_status" id="debt" value="1" {{ $order_rooms->debt_status == 1 ? 'checked' : '' }}>
-                <label class="form-check-label" for="debt">Nợ</label>
-            </div>
+        @endforeach
+        <a class="fs-5 text-decoration-none" href="{{ route('add-service') }}">Thêm dịch vụ</a>
+    </div>
+</div>
 
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="debt_status" id="paid" value="2" {{ $order_rooms->debt_status == 2 ? 'checked' : '' }}>
-                <label class="form-check-label" for="paid">Đã thanh toán</label>
-            </div>
+<div class="row mt-4">
+    <label class="name-add-room-all col-3" for="">Tổng giá:</label>
+    <input class="input-add-room col-9" type="text" id="totalPrice" name="totalPrice" value="{{ number_format($order_rooms->totalPrice) }} VNĐ" readonly>
+</div>
 
-            <div class="row mt-4" id="oldPriceRow">
-                <label class="name-add-room-all col-3" for="">Tổng giá:</label>
-                <div class="col-9 input-add-room">
-                    <span class="input-add-room text-warning fw-bolder">{{ number_format($order_rooms->totalPrice) }} VNĐ</span>
-                </div>
-            </div>
-            <div class="back-add-room">
-              <a class="back-rooms" href="{{route('quan-ly-hd')}}">Hủy</a>
-              <button class="add-room button-add-room-save" type="submit">Cập nhật</button>
-            </div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="debt_status" id="debt" value="1" {{ $order_rooms->debt_status == 1 ? 'checked' : '' }}>
+    <label class="form-check-label" for="debt">Nợ</label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="debt_status" id="paid" value="2" {{ $order_rooms->debt_status == 2 ? 'checked' : '' }}>
+    <label class="form-check-label" for="paid">Đã thanh toán</label>
+</div>
+
+<div class="back-add-room">
+    <a class="back-rooms" href="{{route('quan-ly-hd')}}">Hủy</a>
+    <button class="add-room button-add-room-save" type="submit">Cập nhật</button>
+</div>
         </form>
     </div>
 </div>
@@ -106,13 +109,25 @@
 
 <script>
     function updateTotalPrice() {
-        var price = parseFloat(document.querySelector('select[name="ma_phong"]').selectedOptions[0].getAttribute('data-price'));
-        var stayNights = parseFloat(document.querySelector('input[name="stayNights"]').value);
-        var selectedService = document.querySelector('select[name="name_service"]').selectedOptions[0];
-        var servicePrice = selectedService ? parseFloat(selectedService.getAttribute('data-price')) : 0;
-        var totalPrice = price * stayNights + servicePrice;
-        document.getElementById('totalPrice').innerText = totalPrice.toLocaleString('vi-VN') + ' VNĐ';
-        document.getElementById('oldPriceRow').style.display = 'none';
-        document.getElementById('newPriceRow').style.display = 'block';
+        var stayNights = parseInt(document.getElementsByName("stayNights")[0].value);
+        var roomSelect = document.getElementsByName("ma_phong")[0];
+        var roomPrice = parseFloat(roomSelect.options[roomSelect.selectedIndex].getAttribute("data-price"));
+        var totalPrice = stayNights * roomPrice;
+
+        var serviceQuantities = document.getElementsByName("service_quantities[]");
+        var serviceTotalPrices = document.getElementsByClassName("service-total-price");
+        for (var i = 0; i < serviceQuantities.length; i++) {
+            var quantity = parseInt(serviceQuantities[i].value);
+            var servicePrice = parseFloat(serviceTotalPrices[i].getAttribute("data-price"));
+            var serviceTotalPrice = quantity * servicePrice;
+            serviceTotalPrices[i].value = numberWithCommas(serviceTotalPrice) + " VNĐ";
+            totalPrice += serviceTotalPrice;
+        }
+
+        document.getElementById("totalPrice").value = numberWithCommas(totalPrice) + " VNĐ";
+    }
+
+    function numberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 </script>
