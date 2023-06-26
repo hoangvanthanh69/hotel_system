@@ -26,8 +26,8 @@
                     <thead>
                         <tr class="tr-name-table bg-success">
                             <th>STT</th>
-                            <th>Tên dịch vụ</th>
                             <th>Loại dịch vụ</th>
+                            <th>Tên dịch vụ</th>
                             <th>Đơn giá</th>
                             <th>Ghi chú </th>
                             <th>Chức Năng</th>
@@ -42,7 +42,7 @@
                                 <td>{{$val['name_service']}}</td>
                                 <td>{{number_format($val['price_service'])}} VNĐ</td>
                                 <td>{{$val['note_service']}}</td>
-                                <td class="d-flex ps-4">
+                                <td class="d-flex ps-5">
                                     <form action="{{route('edit-service', $val['id'])}}" class="text-center">
                                         <button class="summit-add-room-button" type='submit'>
                                             <i class="fa-solid fa-pen-to-square"></i>

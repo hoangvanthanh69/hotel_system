@@ -134,3 +134,6 @@ Route::post('/update-debt/{id}', [index_backend::class, 'update_debt'] )->name('
 
 // hủy đơn đặt
 Route::get('/cancel_order/{id}', [index_frontend::class, 'cancelOrder'])->name('cancel_order');
+
+// cập nhật trạng thái nợ
+Route::post('/status_debt/{id}', [index_backend::class, 'status_debt'])->name('status_debt');

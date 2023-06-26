@@ -11,7 +11,6 @@ class tbl_debt extends Model
     public $timestamps = false;
     protected $table = 'tbl_debt';
     protected $fillable = [
-        'id', '	name', 'ms_phong', 'check_in', 'check_out', 'debt'
+        'id', '	name', 'ma_phong', 'check_in', 'check_out', 'totalPrice'
     ];
 }
-

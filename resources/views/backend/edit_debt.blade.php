@@ -12,7 +12,7 @@
 
             <div class="row mt-4">
               <label class="name-add-room-all col-3" for="">Mã phòng:</label>
-              <input class="input-add-room col-9" type="text" name="ms_phong" value="{{$tbl_debt->ms_phong}}">
+              <input class="input-add-room col-9" type="text" name="ms_phong" value="{{$tbl_debt->ma_phong}}">
             </div>
 
             <div class="row mt-4">
@@ -27,7 +27,7 @@
 
             <div class="row mt-4">
               <label class="name-add-room-all col-3" for="">Còn nợ:</label>
-              <input class="input-add-room col-9" type="text" name="debt" value="{{$tbl_debt->debt}}">
+              <input class="input-add-room col-9" type="text" name="debt" value="{{$tbl_debt->totalPrice}}">
             </div>
             <div class="back-add-room">
               <a class="back-rooms" href="{{route('quan-ly-cong-no')}}">Hủy</a>

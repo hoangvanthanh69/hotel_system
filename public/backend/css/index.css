@@ -438,3 +438,12 @@ button.status-check-in-room {
     margin-bottom: 10px;
     background-color: #31e60d;
 }
+button.status-debt-in-room {
+    text-align: center;
+    margin-left: 58%;
+    width: 100%;
+    background: #8b59d0;
+    border: 1px solid;
+    border-radius: 10px;
+    color: wheat;
+}

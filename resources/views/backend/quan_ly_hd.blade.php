@@ -29,21 +29,21 @@
                 </div>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
-                    <tr class="tr-name-table bg-success">
-                        <th>STT</th>
-                        <th>Khách Hàng</th>
-                        <th>SĐT</th>
-                        <th>MS Phòng</th>
-                        <th>Số đêm</th>
-                        <th>Dịch vụ</th>
-                        <th>Tổng giá</th>
-                        <th>Thời gian đặt</th>
-                        <th>Check_in</th>
-                        <th>Check_out</th>
-                        <th>Trạng thái</th>
-                        <th>Thanh toán</th>
-                        <th>Chức Năng</th>
-                    </tr>
+                        <tr class="tr-name-table bg-success">
+                            <th>STT</th>
+                            <th>Khách Hàng</th>
+                            <th>SĐT</th>
+                            <th>MS Phòng</th>
+                            <th>Số đêm</th>
+                            <th>Dịch vụ</th>
+                            <th>Tổng giá</th>
+                            <th>Thời gian đặt</th>
+                            <th>Check_in</th>
+                            <th>Check_out</th>
+                            <th>Trạng thái</th>
+                            <th>Thanh toán</th>
+                            <th>Chức Năng</th>
+                        </tr>
                     </thead>
                     
                     <tbody class="infor">
@@ -55,12 +55,29 @@
                                 <td>{{$val['ma_phong']}}</td>
                                 <td>{{$val['stayNights']}}</td>
                                 <td>
-                                    @foreach ($val->selected_services as $service)         
                                     <div>
-                                        {{ $service['name_service'] }} |
-                                        {{ $service['service_quantities'] }}
+                                        <table class=" table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tên</th>
+                                                    <th>Sl</th>
+                                                </tr>
+                                            </thead>
+                                            @foreach ($val->selected_services as $service)         
+                                            <tbody>
+                                                <tr>
+
+                                                    <td>{{ $service['name_service'] }} </td>
+                                                    <td> 
+                                                        {{ $service['service_quantities'] }}
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                            @endforeach
+                                        </table>
+
                                     </div>
-                                    @endforeach
                                 </td>
                                 <td class="">{{number_format($val['totalPrice'])}} VNĐ</td>
                                 <td>{{$val['created_at']}}</td>
@@ -88,16 +105,31 @@
                                         else if ($val['debt_status'] == 2) {echo '<span>đã thanh toán</span>';}
                                     ?>
                                 </td>
-                                <td class="d-flex ps-4">
+                                <td class="ps-4">
                                     <form action="{{route('edit-customer', $val['id'])}}" class="text-center">
                                         <button class="summit-add-room-button" type='submit'>
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                     </form>
                                     <form action="{{route('delete-order', $val['id'])}}">
-                                        <button class="summit-add-room-button" type='submit'>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$val['id']}}">
                                             <i class="fa fa-trash function-icon-delete" aria-hidden="true"></i>
                                         </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal{{$val['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title text-danger" id="exampleModalLabel">Bạn có chắc muốn xóa đơn hàng này</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
+                                                        <button class="summit-add-room-button btn btn-primary" type='submit'>Xóa</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>

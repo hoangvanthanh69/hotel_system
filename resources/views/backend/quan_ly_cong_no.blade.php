@@ -10,9 +10,6 @@
             <div class="table-responsive table-list-product">
                 <div class="search-option-infor-amdin">
                     <div class="search-infor-amdin-form-room">
-                        <a class="add-room" href="{{route('add-debt')}}">Thêm công nợ</a>
-                    </div>
-                    <div class="search-infor-amdin-form-room">
                         <form action="" method="GET" class="header-with-search-form">
                             @csrf
                             <input type="text" autocapitalize="off" class="header-with-search-input" placeholder="Tìm kiếm" name="search">
@@ -31,31 +28,25 @@
                             <th>Ngày đặt</th>
                             <th>Ngày trả phòng</th>
                             <th>Tiền còn nợ</th>
-                            <th>Chức Năng</th>
+                            <th>Trạng thái</th>
                         </tr>
                     </thead>
                     
                     <tbody class="infor">
-                        @foreach($tbl_debt as $key => $val)
+                        @foreach($order_rooms as $key => $val)
                             <tr class="text-center">
                                 <td>{{$key+1}}</td>
                                 <td>{{$val['name']}}</td>
-                                <td>{{$val['ms_phong']}}</td>
+                                <td>{{$val['ma_phong']}}</td>
                                 <td>{{$val['check_in']}}</td>
                                 <td>{{$val['check_out']}}</td>
-                                <td>{{number_format($val['debt'])}} VNĐ</td>
+                                <td>{{number_format($val['totalPrice'])}} VNĐ</td>
                                 <td class="d-flex ps-4">
-                                    <form action="{{route('edit-debt', $val['id'])}}" class="text-center">
-                                        <button class="summit-add-room-button" type='submit'>
-                                            <i class="fa-solid fa-pen-to-square"></i>
-                                        </button>
+                                <form class="" action="{{route('status_debt', $val['id'])}}" method="POST">
+                                        @csrf
+                                        <button class="status-debt-in-room" type="submit">Đã trả</button>
                                     </form>
-                                    
-                                    <form action="{{route('delete-service', $val['id'])}}" class="text-center">
-                                        <button class="summit-add-room-button" type='submit'>
-                                            <i class="fa fa-trash function-icon-delete" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
+                                </td>
                                 </td>
                             </tr>
                         @endforeach

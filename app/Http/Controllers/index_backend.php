@@ -505,8 +505,8 @@ class index_backend extends Controller{
         if (!Session::get('admin')) {
             return redirect()->route('login');
         }
-        $tbl_debt = tbl_debt::get()->toArray();
-        return view('backend.quan_ly_cong_no', ['tbl_debt' => $tbl_debt]);
+        $order_rooms = order_rooms::where('debt_status','1')->get()->toArray();
+        return view('backend.quan_ly_cong_no', ['order_rooms' => $order_rooms]);
     }
 
     // thêm công nợ
@@ -533,7 +533,6 @@ class index_backend extends Controller{
         $tbl_debt = tbl_debt::find($id);
         return view('backend.edit_debt', ['tbl_debt' => $tbl_debt]);
     }
-
     function update_debt(Request $request, $id){
         $tbl_debt = tbl_debt::find($id);
         $tbl_debt -> name = $request -> name;
@@ -543,5 +542,15 @@ class index_backend extends Controller{
         $tbl_debt -> debt = $request -> debt;
         $tbl_debt -> save();
         return redirect()->route('quan-ly-cong-no');
+    }
+
+    // cập nhật trạng thái nợ
+    public function status_debt($id){
+        $status_debt = order_rooms::find($id);
+        if ($status_debt) {
+            $status_debt->debt_status = 2;
+            $status_debt->save();
+        }
+        return redirect()->back();
     }
 }

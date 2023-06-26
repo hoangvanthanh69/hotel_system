@@ -63,11 +63,25 @@
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
                                     </form>
-                                    
                                     <form action="{{route('delete-rooms', $val['id'])}}">
-                                        <button class="summit-add-room-button" type='submit'>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$val['id']}}">
                                             <i class="fa fa-trash function-icon-delete" aria-hidden="true"></i>
                                         </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal{{$val['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title text-danger" id="exampleModalLabel">Bạn có chắc muốn xóa đơn hàng này</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
+                                                        <button class="summit-add-room-button btn btn-primary" type='submit'>Xóa</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </form>
                                 </td>
                             </tr>
