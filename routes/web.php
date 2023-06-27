@@ -137,3 +137,17 @@ Route::get('/cancel_order/{id}', [index_frontend::class, 'cancelOrder'])->name('
 
 // cập nhật trạng thái nợ
 Route::post('/status_debt/{id}', [index_backend::class, 'status_debt'])->name('status_debt');
+
+// quản lý thu chi
+Route::get('/quan-ly-thu-chi', [index_backend::class, 'quan_ly_thu_chi'])->name('quan-ly-thu-chi');
+
+// them thu chi
+Route::get('/add-expenditure', [index_backend::class,'add_expenditure'])->name('add-expenditure');
+Route::post('/add-expenditures', [index_backend::class,'add_expenditures'])->name('add-expenditures');
+
+// chinh sua thu chi
+Route::get('/edit-expenditure/{id}', [index_backend::class, 'edit_expenditure'])->name('edit-expenditure');
+Route::post('update-expenditure/{id}', [index_backend::class,'update_expenditure'])->name('update-expenditure');
+
+// xoa thu chi
+Route::get('/delete-expenditure/{id}', [index_backend::class, 'delete_expenditure'] )->name('delete-expenditure');

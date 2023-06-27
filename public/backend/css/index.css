@@ -447,3 +447,8 @@ button.status-debt-in-room {
     border-radius: 10px;
     color: wheat;
 }
+td.function-icon-expenditure {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}

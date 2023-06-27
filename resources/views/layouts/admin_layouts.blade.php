@@ -104,7 +104,7 @@
                         <br>
                         <div class="home-filter" id="filter_button">
                             <div class="home-filter-button" data-filter="all">
-                                <a class="@yield('sidebar-active-acount')" href="{{route('quan-ly-tai-khoan')}}">
+                                <a class="@yield('sidebar-active-expenditure')" href="{{route('quan-ly-thu-chi')}}">
                                     <i class="fa-solid fa-user"></i>
                                     Quản lý thu chi
                                 </a>

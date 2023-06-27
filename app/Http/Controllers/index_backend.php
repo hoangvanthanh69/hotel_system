@@ -7,6 +7,7 @@ use App\Models\order_rooms;
 use App\Models\tbl_staff;
 use App\Models\tbl_service;
 use App\Models\tbl_debt;
+use App\Models\tbl_expenditure;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Session;
 use DB;
@@ -552,5 +553,53 @@ class index_backend extends Controller{
             $status_debt->save();
         }
         return redirect()->back();
+    }
+
+    // quan ly thu chi
+    function quan_ly_thu_chi(){
+        if (!Session::get('admin')) {
+            return redirect()->route('login');
+        }
+        $tbl_expenditure = tbl_expenditure::get()->toArray();
+        return view('backend.quan_ly_thu_chi', ['tbl_expenditure' => $tbl_expenditure]);
+    }
+
+    // them thu chi
+    function add_expenditure(){
+        return view('backend.add_expenditure');
+    }
+    function add_expenditures(Request $request){
+        $data = $request -> all();
+        $tbl_expenditure = new tbl_expenditure;
+        $tbl_expenditure -> type = $data['type'];
+        $tbl_expenditure -> name = $data['name'];
+        $tbl_expenditure -> price = $data['price'];
+        $tbl_expenditure -> quantity = $data['quantity'];
+        $tbl_expenditure -> content = $data['content'];
+        $tbl_expenditure -> save();
+        return redirect()-> route('quan-ly-thu-chi');
+    }
+
+    // chinh sua thu chi
+    function edit_expenditure($id){
+        $tbl_expenditure = tbl_expenditure::find($id);
+        return view('backend.edit_expenditure', ['tbl_expenditure' => $tbl_expenditure]);
+    }
+    function update_expenditure(Request $request, $id){
+        $tbl_expenditure = tbl_expenditure::find($id);
+        $tbl_expenditure -> name = $request -> name;
+        $tbl_expenditure -> type = $request -> type;
+        $tbl_expenditure -> price = $request -> price;
+        $tbl_expenditure -> quantity = $request -> quantity;
+        $tbl_expenditure -> content = $request -> content;
+        $tbl_expenditure -> save();
+        return redirect()-> route('quan-ly-thu-chi');
+    }
+
+    // xóa thu chi
+    function delete_expenditure($id){
+        $tbl_expenditure = tbl_expenditure::find($id);
+        $tbl_expenditure->delete();
+        return redirect()->route('quan-ly-thu-chi')->with('success','Xóa thu chi thành công');
     }
 }
