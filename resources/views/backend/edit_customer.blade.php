@@ -36,67 +36,70 @@
             </div>
 
             <div class="row mt-4">
-    <label class="name-add-room-all col-3" for="">MS phòng:</label>
-    <div class="col-9 p-0">
-        <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
-            <option value="">Chọn Phòng</option>
-            @foreach($tbl_rooms as $tbl_room)
-                <option value="{{ $tbl_room->ma_phong }}" data-price="{{ $tbl_room->price }}" {{ $tbl_room->ma_phong == $order_rooms->ma_phong ? 'selected' : '' }}>
-                    {{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ
-                </option>
-            @endforeach
-        </select>
-        <input type="hidden" name="id" value="{{ $order_rooms->id }}">
-    </div>
-</div>
-
-<div class="row mt-4">
-    <label class="name-add-room-all col-3">Dịch vụ</label>
-    <div class="col-9">
-        @foreach($tbl_service as $tbl_services)
-            <div class="form-check d-flex mt-2">
-                @php
-                    $serviceId = $tbl_services->id;
-                    $isChecked = in_array($serviceId, array_column($selectedServices, 'id'));
-                    $quantity = 0;
-                    if ($isChecked) {
-                        $index = array_search($serviceId, array_column($selectedServices, 'id'));
-                        $quantity = $selectedServices[$index]['service_quantities'];
-                    }
-                    $servicePrice = $tbl_services->price_service;
-                    $serviceTotalPrice = $servicePrice * $quantity;
-                @endphp
-                <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}" @if($isChecked) checked @endif>
-                <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
-                    {{ $tbl_services->name_service }} - Giá {{ number_format($servicePrice) }} VNĐ
-                </label>
-                <input type="number" class="col-5" name="service_quantities[]" min="0" value="{{ $quantity }}" onchange="updateTotalPrice()">
-                <input type="hidden" class="service-total-price" data-price="{{ $servicePrice }}" value="{{ $serviceTotalPrice }}">
+                <label class="name-add-room-all col-3" for="">MS phòng:</label>
+                <div class="col-9 p-0">
+                <select name="ma_phong" class="form-select" onchange="updateTotalPrice()">
+                    <option value="">Chọn Phòng</option>
+                    @foreach($tbl_rooms as $tbl_room)
+                        <option value="{{ $tbl_room->ma_phong }}" data-price="{{ $tbl_room->price }}" {{ isset($order_rooms->ma_phong) && $tbl_room->ma_phong == $order_rooms->ma_phong ? 'selected' : '' }}>
+                            {{ $tbl_room->ma_phong }} - Giá {{ number_format($tbl_room->price) }} VNĐ
+                        </option>
+                    @endforeach
+                </select>
+                    <input type="hidden" name="id" value="{{ $order_rooms->id }}">
+                </div>
             </div>
-        @endforeach
-        <a class="fs-5 text-decoration-none" href="{{ route('add-service') }}">Thêm dịch vụ</a>
-    </div>
-</div>
 
-<div class="row mt-4">
-    <label class="name-add-room-all col-3" for="">Tổng giá:</label>
-    <input class="input-add-room col-9" type="text" id="totalPrice" name="totalPrice" value="{{ number_format($order_rooms->totalPrice) }} VNĐ" readonly>
-</div>
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3">Dịch vụ</label>
+                <div class="col-9">
+                @foreach($tbl_service as $index => $tbl_services)
+                    <div class="form-check d-flex mt-2">
+                        @php
+                            $serviceId = $tbl_services->id;
+                            $isChecked = in_array($serviceId, array_column($selectedServices, 'id'));
+                            $quantity = 0;
+                            if ($isChecked) {
+                                $index = array_search($serviceId, array_column($selectedServices, 'id'));
+                                if (isset($selectedServices[$index]['service_quantity'])) {
+                                    $quantity = $selectedServices[$index]['service_quantity'];
+                                }
+                            }
+                            $servicePrice = $tbl_services->price_service;
+                            $serviceTotalPrice = $servicePrice * $quantity;
+                        @endphp
+                        <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}" @if($isChecked) checked @endif>
+                        <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
+                            {{ $tbl_services->name_service }} - Giá {{ number_format($servicePrice) }} VNĐ
+                        </label>
+                        <input type="number" class="col-5" name="service_quantities[{{ $index }}]" min="0" value="{{ $quantity }}" onchange="updateServiceQuantity(this)">
 
-<div class="form-check">
-    <input class="form-check-input" type="radio" name="debt_status" id="debt" value="1" {{ $order_rooms->debt_status == 1 ? 'checked' : '' }}>
-    <label class="form-check-label" for="debt">Nợ</label>
-</div>
+                        <input type="hidden" class="service-total-price" data-price="{{ $servicePrice }}" value="{{ $serviceTotalPrice }}">
+                    </div>
+                    @endforeach
+                    <a class="fs-5 text-decoration-none" href="{{ route('add-service') }}">Thêm dịch vụ</a>
+                </div>
+            </div>
 
-<div class="form-check">
-    <input class="form-check-input" type="radio" name="debt_status" id="paid" value="2" {{ $order_rooms->debt_status == 2 ? 'checked' : '' }}>
-    <label class="form-check-label" for="paid">Đã thanh toán</label>
-</div>
+            <div class="row mt-4">
+                <label class="name-add-room-all col-3" for="">Tổng giá:</label>
+                <input class="input-add-room col-9" type="text" id="totalPrice" name="totalPrice" value="{{ number_format($order_rooms->totalPrice) }} VNĐ" readonly>
+            </div>
 
-<div class="back-add-room">
-    <a class="back-rooms" href="{{route('quan-ly-hd')}}">Hủy</a>
-    <button class="add-room button-add-room-save" type="submit">Cập nhật</button>
-</div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="debt_status" id="debt" value="1" {{ $order_rooms->debt_status == 1 ? 'checked' : '' }}>
+                <label class="form-check-label" for="debt">Nợ</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="debt_status" id="paid" value="2" {{ $order_rooms->debt_status == 2 ? 'checked' : '' }}>
+                <label class="form-check-label" for="paid">Đã thanh toán</label>
+            </div>
+
+            <div class="back-add-room">
+                <a class="back-rooms" href="{{route('quan-ly-hd')}}">Hủy</a>
+                <button class="add-room button-add-room-save" type="submit">Cập nhật</button>
+            </div>
         </form>
     </div>
 </div>

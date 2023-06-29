@@ -78,8 +78,7 @@ class index_backend extends Controller{
         $tbl_rooms = tbl_rooms::get()->toArray();
         return view('backend.quan_ly_phong', ['tbl_rooms' => $tbl_rooms]);
     }
-
-    // quan ly hd
+    
     function quan_ly_hd(){
         if (!Session::get('admin')) {
             return redirect()->route('login');
@@ -97,23 +96,28 @@ class index_backend extends Controller{
             }
             $selectedServices = json_decode($order->selected_services, true);
             $services = [];
-            foreach ($selectedServices as $service) {
-                $serviceId = $service['id']; 
-                $quantity = $service['service_quantities'];
-                $serviceModel = tbl_service::find($serviceId);
-                if ($serviceModel) {
-                    $serviceName = $serviceModel->name_service;
-                    $services[] = [
-                        'name_service' => $serviceName,
-                        'service_quantities' => $quantity,
-                    ];
+            if ($selectedServices) {
+                foreach ($selectedServices as $service) {
+                    $serviceId = $service['id'];
+                    if (isset($service['service_quantity'])) {
+                        $quantity = $service['service_quantity'];
+                    } else {
+                        $quantity = 0;
+                    }
+                    $serviceModel = tbl_service::find($serviceId);
+                    if ($serviceModel) {
+                        $serviceName = $serviceModel->name_service;
+                        $services[] = [
+                            'name_service' => $serviceName,
+                            'service_quantity' => $quantity,
+                        ];
+                    }
                 }
             }
             $order->selected_services = $services;
         }
         return view('backend.quan_ly_hd', compact('order_rooms'));
     }
-
     
     // quan ly trang thai phong
     function quan_ly_trang_thai_phong(){
@@ -360,13 +364,11 @@ class index_backend extends Controller{
         $order_room->address = $request->input('address');
         $order_room->debt_status = $request->input('debt_status');
         $order_room->status = 1;
-        
         $checkInDate = new \DateTime($order_room->check_in);
         $stayNights = $order_room->stayNights;
         $checkOutDate = clone $checkInDate;
         $checkOutDate->modify("+" . $stayNights . " days");
         $order_room->check_out = $checkOutDate->format('Y-m-d');
-    
         $tbl_room = tbl_rooms::where('ma_phong', $order_room->ma_phong)->first();
         $order_room->totalPrice = $stayNights * $tbl_room->price;
     
@@ -374,36 +376,36 @@ class index_backend extends Controller{
         $serviceQuantities = $request->input('service_quantities', []);
         $services = [];
         $totalServicePrice = 0;
-        foreach ($selectedServices as $index => $serviceId) {
-            $serviceModel = tbl_service::find($serviceId);
-            if ($serviceModel) {
-                $serviceName = $serviceModel->name_service;
-                $servicePrice = $serviceModel->price_service;
-                $quantity = $serviceQuantities[$index];
-                $serviceTotalPrice = $servicePrice * $quantity; // Tính tổng giá dịch vụ cho mỗi dịch vụ
-                $totalServicePrice += $serviceTotalPrice; // Cộng tổng giá dịch vụ vào biến $totalServicePrice
-                $services[] = [
-                    'id' => $serviceId,
-                    'name_service' => $serviceName,
-                    'service_quantities' => $quantity,
-                    'service_total_price' => $serviceTotalPrice,
-                ];
+        foreach ($selectedServices as $serviceId => $isChecked) {
+            if ($isChecked) {
+                $serviceModel = tbl_service::find($serviceId);
+                if ($serviceModel) {
+                    $serviceName = $serviceModel->name_service;
+                    $servicePrice = $serviceModel->price_service;
+                    $quantity = isset($serviceQuantities[$serviceId]) ? $serviceQuantities[$serviceId] : 0;
+                    $serviceTotalPrice = $servicePrice * $quantity;
+                    $totalServicePrice += $serviceTotalPrice; 
+                    $services[] = [
+                        'id' => $serviceId,
+                        'name_service' => $serviceName,
+                        'service_quantity' => $quantity,
+                        'service_total_price' => $serviceTotalPrice,
+                    ];
+                }
             }
         }
-        $order_room->totalPrice += $totalServicePrice;
+    
         $order_room->selected_services = json_encode($services);
+        $order_room->totalPrice += $totalServicePrice;
         $order_room->save();
     
         return redirect()->route('quan-ly-hd')->with('message', 'Đặt phòng thành công');
     }
     
-    
-
     // edit đơn đặt phòng của khách hàng
     function edit_customer($id){
         $tbl_rooms = tbl_rooms::whereNotIn('ma_phong', function ($query) {
-            $query->select('ma_phong')->from('order_rooms')->whereIn('status', [2]);
-        })->get();
+            $query->select('ma_phong')->from('order_rooms')->where('status');})->get();
         $tbl_service = tbl_service::all();
         $order_rooms = order_rooms::find($id);
         $selectedServices = [];
@@ -431,28 +433,29 @@ class index_backend extends Controller{
         $totalPrice = $price * $stayNights;
         $selectedServices = [];
         foreach ($request->input('name_service', []) as $index => $serviceId) {
-            $quantity = $request->input('service_quantities.' . $index);
+            $quantity = isset($request->input('service_quantities')[$index]) ? $request->input('service_quantities')[$index] : 0;
             $service = tbl_service::find($serviceId);
             if ($service) {
                 $servicePrice = $service->price_service;
                 $serviceTotalPrice = $servicePrice * $quantity;
                 $totalPrice += $serviceTotalPrice;
-    
+
                 $selectedServices[] = [
                     'id' => $serviceId,
                     'name_service' => $service->name_service,
-                    'price_service' => $servicePrice,
-                    'service_quantities' => $quantity,
+                    'service_quantity' => $quantity,
                     'service_total_price' => $serviceTotalPrice,
                 ];
             }
         }
         $order_rooms->totalPrice = $totalPrice;
         $order_rooms->selected_services = json_encode($selectedServices);
-    
         $order_rooms->save();
         return redirect()->route('quan-ly-hd');
     }
+
+
+
 
     // quản lý dịch vụ
     function quan_ly_dich_vu(){
@@ -601,5 +604,27 @@ class index_backend extends Controller{
         $tbl_expenditure = tbl_expenditure::find($id);
         $tbl_expenditure->delete();
         return redirect()->route('quan-ly-thu-chi')->with('success','Xóa thu chi thành công');
+    }
+
+    // chi tiet doanh thu
+    function chitiet_doanhthu(Request $request){
+        if (!Session::get('admin')) {
+            return redirect()->route('login');
+        }
+        $dates = now()->setTimezone('Asia/Ho_Chi_Minh');;
+        $total_price_today = order_rooms::where('status', '=', 3)->whereDate('created_at', '=', $dates)->sum('totalPrice');
+        // print_r($total_price_today);die;
+        $date = $request->input('date', date('d-m-Y'));
+        $tong_gia_ngay = order_rooms::where('status', '=', 3)->whereDate('created_at', '=', $date)->sum('totalPrice');
+        $month = $request->input('month', date('m-Y'));
+        $total_price_month = order_rooms::where('status', '=', 3)->whereYear('created_at', '=', date('Y', strtotime($month)))
+            ->whereMonth('created_at', '=', date('m', strtotime($month)))->sum('totalPrice');
+        $year = $request->input('year', date('Y'));
+        $total_price_year = order_rooms::where('status', '=', 3)->whereYear ('created_at', '=',$year)->sum('totalPrice');
+        $start_date = $request->input('start_date', date('d-m-Y'));
+        $end_date = $request->input('end_date', date('d-m-Y'));
+        $total_revenue = order_rooms::where('status', '=', 3)->whereBetween('created_at', [$start_date, $end_date])->sum('totalPrice');
+        return view('backend.chitiet_doanhthu',['total_price_today' => $total_price_today, 'dates'=> $dates,], compact(
+        'tong_gia_ngay', 'date','year', 'total_price_year', 'start_date', 'end_date', 'total_revenue', 'month', 'total_price_month'));
     }
 }

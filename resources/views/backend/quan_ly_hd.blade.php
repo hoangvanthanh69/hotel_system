@@ -63,23 +63,25 @@
                                                     <th>Sl</th>
                                                 </tr>
                                             </thead>
-                                            @foreach ($val->selected_services as $service)         
-                                            <tbody>
-                                                <tr>
+                                            @if ($val->selected_services) 
+                                                @foreach ($val->selected_services as $service)
+                                                <tbody>
+                                                    <tr>
+                                                        @php
+                                                            $serviceName = $service['name_service'];
+                                                            $quantity = $service['service_quantity'];
+                                                        @endphp
+                                                        <td>{{ $serviceName}} </td>
+                                                        <td> {{ $quantity }}</td>
 
-                                                    <td>{{ $service['name_service'] }} </td>
-                                                    <td> 
-                                                        {{ $service['service_quantities'] }}
-                                                    </td>
-
-                                                </tr>
-                                            </tbody>
-                                            @endforeach
+                                                    </tr>
+                                                </tbody>
+                                                @endforeach
+                                            @endif
                                         </table>
-
                                     </div>
                                 </td>
-                                <td class="">{{number_format($val['totalPrice'])}} VNĐ</td>
+                                <td>{{number_format($val['totalPrice'])}} VNĐ</td>
                                 <td>{{$val['created_at']}}</td>
                                 <td>{{$val['check_in']}}</td>
                                 <td>{{$val['check_out']}}</td>

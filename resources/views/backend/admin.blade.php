@@ -91,6 +91,7 @@
                     <div class="col-auto card-icon text-success" style="font-size: 38px;">
                         <i class="fa-sharp fa-solid fa-money-check-dollar"></i>
                     </div>
+                    <a href="{{route('chitiet_doanhthu')}}">xem chi tiết</a>
                 </div>
             </div>
         </div>

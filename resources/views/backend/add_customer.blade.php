@@ -38,16 +38,16 @@
             <div class="row mt-4">
               <label class="name-add-room-all col-3">Dịch vụ</label>
               <div class="col-9">
-                  @foreach($tbl_service as $tbl_services)
-                      <div class="form-check d-flex mt-2">
-                          <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[]" id="service{{ $tbl_services->id }}">
-                          <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
-                              {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
-                          </label>
-                          <input type="number" class="col-5" name="service_quantities[]">
-                      </div>
-                  @endforeach
-                  <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
+                @foreach($tbl_service as $tbl_services)
+                  <div class="form-check d-flex mt-2">
+                      <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[{{ $tbl_services->id }}]" id="service{{ $tbl_services->id }}">
+                      <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
+                          {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
+                      </label>
+                      <input type="number" class="col-5" name="service_quantities[{{ $tbl_services->id }}]" value="{{ $serviceQuantities[$tbl_services->id] ?? '' }}">
+                  </div>
+                @endforeach
+                <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
               </div>
             </div>
 

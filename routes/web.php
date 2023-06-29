@@ -151,3 +151,6 @@ Route::post('update-expenditure/{id}', [index_backend::class,'update_expenditure
 
 // xoa thu chi
 Route::get('/delete-expenditure/{id}', [index_backend::class, 'delete_expenditure'] )->name('delete-expenditure');
+
+// chi tiet doanh thu
+Route::get('/chitiet_doanhthu', [index_backend::class, 'chitiet_doanhthu'])->name('chitiet_doanhthu');
