@@ -12,6 +12,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Session;
 use DB;
 
+
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DoanhThuExport;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+
 class index_backend extends Controller{
     // tong quan admin
     function admin(){
@@ -610,7 +616,7 @@ class index_backend extends Controller{
     function chitiet_doanhthu(Request $request){
         if (!Session::get('admin')) {
             return redirect()->route('login');
-        }
+        }         
         $dates = now()->setTimezone('Asia/Ho_Chi_Minh');;
         $total_price_today = order_rooms::where('status', '=', 3)->whereDate('created_at', '=', $dates)->sum('totalPrice');
         // print_r($total_price_today);die;

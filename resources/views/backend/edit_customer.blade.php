@@ -72,7 +72,7 @@
                         <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
                             {{ $tbl_services->name_service }} - Giá {{ number_format($servicePrice) }} VNĐ
                         </label>
-                        <input type="number" class="col-5" name="service_quantities[{{ $index }}]" min="0" value="{{ $quantity }}" onchange="updateServiceQuantity(this)">
+                        <input type="number" class="col-5" name="service_quantities[{{ $index }}]" min="0" value="{{ $quantity }}" onchange="updateTotalPrice()">
 
                         <input type="hidden" class="service-total-price" data-price="{{ $servicePrice }}" value="{{ $serviceTotalPrice }}">
                     </div>
@@ -116,8 +116,7 @@
         var roomSelect = document.getElementsByName("ma_phong")[0];
         var roomPrice = parseFloat(roomSelect.options[roomSelect.selectedIndex].getAttribute("data-price"));
         var totalPrice = stayNights * roomPrice;
-
-        var serviceQuantities = document.getElementsByName("service_quantities[]");
+        var serviceQuantities = document.querySelectorAll("input[name^='service_quantities[']");
         var serviceTotalPrices = document.getElementsByClassName("service-total-price");
         for (var i = 0; i < serviceQuantities.length; i++) {
             var quantity = parseInt(serviceQuantities[i].value);
@@ -126,7 +125,7 @@
             serviceTotalPrices[i].value = numberWithCommas(serviceTotalPrice) + " VNĐ";
             totalPrice += serviceTotalPrice;
         }
-
+        console.log("Quantity:", quantity);
         document.getElementById("totalPrice").value = numberWithCommas(totalPrice) + " VNĐ";
     }
 

@@ -42,9 +42,9 @@
                   <div class="form-check d-flex mt-2">
                       <input class="form-check-input ps-3" type="checkbox" value="{{ $tbl_services->id }}" name="name_service[{{ $tbl_services->id }}]" id="service{{ $tbl_services->id }}">
                       <label class="form-check-label col-8" for="service{{ $tbl_services->id }}">
-                          {{ $tbl_services->name_service }} - Giá {{ number_format($tbl_services->price_service) }} VNĐ
+                          {{ $tbl_services->name_service }} - Giá {{$tbl_services->price_service}} VNĐ
                       </label>
-                      <input type="number" class="col-5" name="service_quantities[{{ $tbl_services->id }}]" value="{{ $serviceQuantities[$tbl_services->id] ?? '' }}">
+                      <input type="number" class="col-5" name="service_quantities[{{ $tbl_services->id }}]" value="{{ $serviceQuantities[$tbl_services->id] ?? '' }}" onchange="updateTotalPrice()">
                   </div>
                 @endforeach
                 <a class="fs-5 text-decoration-none" href="{{route('add-service')}}">Thêm dịch vụ</a>
@@ -76,7 +76,7 @@
 
             <div class="row mt-4">
               <label class="name-add-room-all col-3" for="">Tổng giá:</label>
-              <span class="input-add-room col-9 text-warning fw-bolder" id="totalPrice"></span>
+              <input class="input-add-room col-9" type="text" id="totalPrice" name="totalPrice" value="0 VNĐ" readonly>
             </div>
 
             <div class="back-add-room">
@@ -130,32 +130,20 @@
   function updateTotalPrice() {
     var stayNights = parseInt(document.getElementsByName("stayNights")[0].value);
     var selectedRoomOption = document.getElementsByName("ma_phong")[0].options[document.getElementsByName("ma_phong")[0].selectedIndex];
-    var roomPrice = parseInt(selectedRoomOption.getAttribute("data-price"));
-    var selectedServiceOptions = document.querySelectorAll("input[name='name_service[]']:checked");
+    var roomPrice = parseFloat(selectedRoomOption.getAttribute("data-price"));
+    var selectedServiceOptions = document.querySelectorAll("input[name^='name_service[']:checked");
     var totalPrice = stayNights * roomPrice;
-
     selectedServiceOptions.forEach(function(option) {
-        var servicePrice = parseInt(option.nextElementSibling.innerText.match(/Giá (\d+)/)[1]);
-        var quantity = parseInt(option.nextElementSibling.nextElementSibling.value);
-        totalPrice += servicePrice * quantity;
+      var serviceId = option.value;
+      var servicePriceText = option.nextElementSibling.innerText.match(/Giá (\d+)/)[1];
+      var servicePrice = parseFloat(servicePriceText.replace(/[^0-9.]/g, ""));
+      var quantity = parseInt(document.getElementsByName("service_quantities[" + serviceId + "]")[0].value);
+      totalPrice += servicePrice * quantity;
     });
 
-    document.getElementById("totalPrice").innerText = numberWithCommas(totalPrice) + " VNĐ";
-}
-
-function numberWithCommas(number) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-// Thêm sự kiện change cho các phần tử liên quan
-document.getElementsByName("stayNights")[0].addEventListener("change", updateTotalPrice);
-document.getElementsByName("ma_phong")[0].addEventListener("change", updateTotalPrice);
-var serviceOptions = document.querySelectorAll("input[name='name_service[]']");
-serviceOptions.forEach(function(option) {
-    option.addEventListener("change", updateTotalPrice);
-});
-
-  function numberWithCommas(number) {
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    document.getElementById("totalPrice").value = formatCurrency(totalPrice) + " VNĐ";
+  }
+  function formatCurrency(number) {
+    return new Intl.NumberFormat("vi-VN").format(number);
   }
 </script>

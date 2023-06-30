@@ -1,13 +1,12 @@
 @extends('layouts.admin_layouts')
 @section('sidebar-active-home', 'active' )
 @section('content')
-<div class="col-10 nav-row-10 ">
     <div class="container-fluid">
     <div class="row">
         <h5 class="order-detail-overview">Thống kê chi tiết doanh thu</h5>
         <!-- tổng doanh thu  -->
         <div class="col-6">
-            <div class="card statistical-all statistical-all-delivered">
+            <div class="card statistical-all bg-secondary">
                 <div class="row no-gutters ">
                     <div class="col mr-2 p-3 text-light center-total-product">
                         <div class="text-xs font-weight-bold text-uppercase mb-2 text-warning">
@@ -23,7 +22,7 @@
         </div>
 
         <div class="col-6">
-            <div class="card statistical-all statistical-delivered-date">
+            <div class="card statistical-all bg-success">
                 <div class="row no-gutters ">
                     <div class="col mr-2 p-3 text-light center-total-product">
                         <div class="text-xs font-weight-bold text-uppercase mb-2 text-warning">
@@ -43,7 +42,7 @@
         </div>
 
         <div class="col-6">
-            <div class="card statistical-all statistical-delivered-year">
+            <div class="card statistical-all bg-primary">
                 <div class="row no-gutters ">
                     <div class="col mr-2 p-3 text-light center-total-product">
                         <div class="text-xs font-weight-bold text-uppercase mb-2 text-warning">
@@ -63,10 +62,10 @@
         </div>
 
         <div class="col-6">
-            <div class="card statistical-all statistical-delivered-month">
+            <div class="card statistical-all bg-warning">
                 <div class="row no-gutters ">
                     <div class="col mr-2 p-3 text-light center-total-product">
-                        <div class="text-xs font-weight-bold text-uppercase mb-2 text-warning">
+                        <div class="text-xs font-weight-bold text-uppercase mb-2 text-secondary">
                             Tổng doanh thu theo tháng
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
@@ -83,7 +82,7 @@
         </div>
         
         <div class="col-6 ">
-            <div class="card statistical-all statistical-delivered-period">
+            <div class="card statistical-all bg-dark">
                 <div class="row no-gutters ">
                     <div class="col mr-2 p-3 text-light center-total-product">
                         <div class="text-xs font-weight-bold text-uppercase mb-2 text-warning">
@@ -92,14 +91,14 @@
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
                             <form method="GET" action="{{ route('chitiet_doanhthu') }}">
                                 @csrf
-                                <div class="form-group mb-3">
-                                    <label for="start_date">Ngày bắt đầu:</label>
+                                <div class="mb-3 d-flex text-center">
+                                    <label for="start_date" class="col-4">Ngày bắt đầu:</label>
                                     <input class="input-total-revenue" type="date" id="start_date" name="start_date" required />
                                 </div>
-                                <div class="form-group">
-                                    <label for="end_date">Ngày kết thúc:</label>
+                                <div class="mb-3 d-flex text-center">
+                                    <label for="end_date" class="col-4">Ngày kết thúc:</label>
                                     <input class="input-total-revenue" type="date" id="end_date" name="end_date" required />
-                                    <button class="button-total-revenue" type="submit">Tính</button>
+                                    <button class="button-total-revenue ms-2" type="submit">Tính</button>
                                 </div>
                             </form>
                             <span class="count-all">{{$start_date}} đến {{$end_date}} là: {{number_format($total_revenue)}} đ</span>
@@ -108,9 +107,8 @@
                 </div>
             </div>
         </div>
+        
 
         
     </div>
-    
-</div>
 @endsection
